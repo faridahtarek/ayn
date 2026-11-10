@@ -13,7 +13,7 @@
 
 ## 2. The idea
 
-Ayn is a web application where tourists in Cairo and Giza book local experiences at one fixed price per person, paid in advance. Small businesses such as tour companies, licensed guides, craft workshops and cooking schools list their tours and workshops, each with a time slot and a group size limit. Tourists often see the Pyramids and the museum and then find little else they trust enough to book, because prices are unclear and haggling is expected. Ayn solves this with a small catalogue in which every listing is approved by an admin before tourists can see it, and only tourists who booked an experience can review it.
+Ayn is a web application where tourists in Cairo and Giza book local experiences at one fixed price per person, paid in advance. Small businesses such as tour companies, licensed guides, craft workshops and cooking schools list their tours and workshops, each with set dates and a group size limit. Egypt welcomed a record of nearly 19 million tourists in 2025, yet many see the Pyramids and the Grand Egyptian Museum and then find little else they trust enough to book, because prices are unclear and haggling is expected. Ayn solves this with a curated catalogue in which every listing is approved by an admin before tourists can see it, and only tourists who booked an experience can review it.
 
 ## 3. Features
 
