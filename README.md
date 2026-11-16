@@ -9,64 +9,49 @@
 | Name | Student ID | Tutorial group | GitHub username |
 |---|---|---|---|
 | Faridah Tarek | 13002082 | T1 | faridahtarek |
-| lojaine soliman | 16003064 | T1 | lojainesoliman |
+| Lojaine Soliman | 16003064 | T1 | lojainesoliman |
 
 ## 2. The idea
 
-Ayn is a web application where tourists in Cairo and Giza book local experiences at one fixed price per person, paid in advance. Small businesses such as tour companies, licensed guides, craft workshops and cooking schools list their tours and workshops, each with set dates and a group size limit. Egypt welcomed a record of nearly 19 million tourists in 2025, yet many see the Pyramids and the Grand Egyptian Museum and then find little else they trust enough to book, because prices are unclear and haggling is expected. Ayn solves this with a curated catalogue in which every listing is approved by an admin before tourists can see it, and only tourists who booked an experience can review it.
+Ayn is a web application where companies pay for small Egyptian farmers to switch from flood irrigation to drip irrigation, and reward them for doing it. Most farmers have under three feddans and cannot pay for a drip kit up front, and since they are not billed for the canal water they use, switching saves them little money. Companies, meanwhile, need real projects to report: listed companies in Egypt must disclose their environmental and social practices, and many have water targets to meet. Ayn connects the two. A cooperative officer registers each farm with a quote from a local installer, because farmers do not use the app themselves. A company funds the kit and sets a reward for the farmer. Once the kit is installed, the officer uploads proof, and the company confirms it, which releases the reward. The farmer gets the kit with no debt and a reward on top, the company gets a farm-by-farm record it can put in its sustainability report, and Ayn earns a fee on every confirmed farm.
 
 ## 3. Features
 
 ### 3.1 The full product
-   
-- Tourists, businesses and admins register and log in, each with their own role
 
-- Businesses create, edit and delete listings for their tours and workshops
-
-- Each listing shows what is included, the duration, the language spoken, the meeting point, the price per person, the group size limit and the available dates
-
-- Admins approve or reject new listings, and remove poor ones
-
-- Tourists browse approved listings and filter them by type, date and price
-
-- Tourists book a date and a group size, and change or cancel their booking
-
-- Tourists review an experience they booked, with a rating and a comment
-
-- Businesses see the bookings made on their listings
-
-- Online card payment when booking 
-
-- The business is paid only after the experience has happened 
-
-- Hotels and holiday homes share an Ayn link with their guests and earn a share of each booking 
-
-- Hotel partners track their referred bookings and earnings 
-
-- Listings that fall below a set rating are removed automatically 
-
-- Listings shown in several languages 
-
+- Cooperative officers and companies register and log in, each with their own role
+- Officers register farms: farmer's name and phone, village, governorate, land in feddans, crop, and the installer and price quoted for the drip kit
+- Companies browse farms waiting for funding and filter them by governorate, crop and size
+- Companies fund a farm's kit and set a reward for the farmer
+- Officers upload proof of the installation: a photo, the installation date and a note
+- Companies confirm or reject the proof; a confirmed farm releases the farmer's reward, and a rejected one goes back to the officer for new proof
+- Each company sees every farm it funded, its status and the total feddans it has switched to drip, ready for its sustainability report
+- Each officer sees every farm in their cooperative and the rewards paid to its farmers
+- Admins check new officer and company accounts (not built in this course)
+- Online payment by companies, held until the installation is confirmed (not built in this course: payment is simulated)
+- Paying rewards to farmers' mobile wallets (not built in this course)
+- An estimate of the water saved per farm, and a yearly certificate for companies' sustainability reports (not built in this course)
+- Arabic interface for officers (not built in this course)
 
 ### 3.2 The use cases we will build
 
 | # | Use case | What the user does | What they see | What is stored |
 |---|---|---|---|---|
-| 1 | Registration and login | Registers with name, email and password; logs in with email and password | Their home page, with their name in the header | A User, with the password hashed and the role `tourist` by default |
-| 2 | Business manages its listings | A business fills in a form to create a listing (title, type, description, price, group size limit, dates), and later edits or deletes it | The "My listings" page, with the new listing marked as pending, and the changes after an edit or a delete | A Listing linked to the business, with the status `pending`; it is updated on edit and removed on delete |
-| 3 | Tourist books an experience | A tourist opens an approved listing, picks a date and a group size and confirms; later changes the date or group size, or cancels | The "My bookings" page, with the booking, its date, group size and total price | A Booking linked to the tourist and the listing; it is updated on change and removed on cancel |
-| 4 | Tourist reviews an experience | A tourist opens one of their bookings and submits a rating from 1 to 5 with a comment; later edits or deletes the review | The review on the listing's page, and the listing's average rating | A Review linked to the tourist, the listing and the booking; it is updated on edit and removed on delete |
-| 5 | Admin approves listings | An admin opens the list of pending listings and approves or rejects each one, and removes a listing that is already live | The pending list without the handled listing; approved listings appear on the browse page | The Listing's status changes to `approved` or `rejected`; a removed Listing is deleted |
+| 1 | Registration and login | Registers with name, email, password, role (officer or company) and organisation; logs in with email and password | Their home page, with their name in the header | A User, with the password hashed, their role (`officer` if none is chosen) and organisation |
+| 2 | Officer manages farms | A cooperative officer registers a farm (farmer's name and phone, village, governorate, feddans, crop, installer, kit cost), and later edits or deletes it while it is not funded | The "My farms" page, with each farm and its status | A Farm linked to the officer, with the status `open`; it is updated on edit and removed on delete |
+| 3 | Company funds a farm | A company opens an open farm, confirms the kit cost and sets a reward for the farmer; later changes the reward or withdraws before proof is uploaded | The farm marked as funded, and the "My farms funded" page with the total it has committed | A Funding linked to the company and the farm; the Farm's status changes to `funded`, and back to `open` on withdraw |
+| 4 | Officer uploads proof | For a funded farm, the officer adds proof of the installation (photo link, installation date, note); later edits it, for example after the company rejects it, or deletes it before the company reviews it | The farm's page with its proof, marked as waiting for review | A Proof linked to the farm and the officer, with the status `pending`; the Farm's status changes to `installed`; an edit sets the Proof back to `pending`, and a delete removes it and sets the Farm back to `funded` |
+| 5 | Company reviews proof | The company opens the farms it funded that have proof, and confirms or rejects each one with a note | The farm marked as confirmed or rejected, and the company's total feddans switched | The Proof's status changes to `confirmed` or `rejected`; on confirm, the Farm's status changes to `confirmed` and the Funding's reward to `released`; on reject, the Farm goes back to `funded` so the officer can send new proof |
 
 ## 4. Who owns what
 
 | Member | Use case |
 |---|---|
 | Faridah Tarek | 1. Registration and login |
-| Faridah Tarek | 2. Business manages its listings |
-| lojaine soliman | 3. Tourist books an experience |
-| lojaine soliman | 4. Tourist reviews an experience |
-| Faridah Tarek | 5. Admin approves listings |
+| Faridah Tarek | 2. Officer manages farms |
+| Lojaine Soliman | 3. Company funds a farm |
+| Faridah Tarek | 4. Officer uploads proof |
+| Lojaine Soliman | 5. Company reviews proof |
 
 ## 5. Data model
 
@@ -77,51 +62,56 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }, // stored hashed, never as plain text
-  role: { type: String, enum: ['tourist', 'business', 'admin'], default: 'tourist' },
+  role: { type: String, enum: ['officer', 'company'], default: 'officer' }, // chosen on the registration form
+  organisation: { type: String }, // the cooperative or the company's name
 });
 ```
 
-### Listing
+### Farm
 
 ```js
-const listingSchema = new mongoose.Schema({
-  business: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  title: { type: String, required: true },
-  type: { type: String, enum: ['sightseeing', 'workshop'], required: true },
-  description: { type: String, required: true },
-  included: { type: String },
-  durationHours: { type: Number, required: true },
-  language: { type: String, required: true },
-  meetingPoint: { type: String, required: true },
-  price: { type: Number, required: true }, // fixed price per person
-  maxGroupSize: { type: Number, required: true },
-  dates: [{ type: Date }], // the dates the experience can be booked on
-  status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+const farmSchema = new mongoose.Schema({
+  officer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  farmerName: { type: String, required: true },
+  farmerPhone: { type: String, required: true },
+  village: { type: String, required: true },
+  governorate: { type: String, required: true },
+  feddans: { type: Number, required: true },
+  crop: { type: String, required: true },
+  installer: { type: String, required: true }, // the local company that supplies and installs the kit
+  kitCost: { type: Number, required: true }, // the installer's quote, in Egyptian pounds
+  status: {
+    type: String,
+    enum: ['open', 'funded', 'installed', 'confirmed'],
+    default: 'open',
+  },
 });
 ```
 
-### Booking
+### Funding
 
 ```js
-const bookingSchema = new mongoose.Schema({
-  tourist: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  listing: { type: mongoose.Schema.Types.ObjectId, ref: 'Listing', required: true },
-  date: { type: Date, required: true }, // one of the listing's dates
-  groupSize: { type: Number, required: true },
-  totalPrice: { type: Number, required: true }, // price per person x group size
+const fundingSchema = new mongoose.Schema({
+  company: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  farm: { type: mongoose.Schema.Types.ObjectId, ref: 'Farm', required: true, unique: true }, // one company per farm
+  kitCost: { type: Number, required: true },
+  reward: { type: Number, required: true }, // paid to the farmer once confirmed
+  rewardStatus: { type: String, enum: ['held', 'released'], default: 'held' },
   paid: { type: Boolean, default: true }, // payment is simulated in this course
 });
 ```
 
-### Review
+### Proof
 
 ```js
-const reviewSchema = new mongoose.Schema({
-  tourist: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  listing: { type: mongoose.Schema.Types.ObjectId, ref: 'Listing', required: true },
-  booking: { type: mongoose.Schema.Types.ObjectId, ref: 'Booking', required: true, unique: true }, // one review per booking
-  rating: { type: Number, min: 1, max: 5, required: true },
-  comment: { type: String },
+const proofSchema = new mongoose.Schema({
+  farm: { type: mongoose.Schema.Types.ObjectId, ref: 'Farm', required: true, unique: true },
+  officer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  photoUrl: { type: String, required: true }, // a link to the photo, no file upload
+  installedOn: { type: Date, required: true },
+  note: { type: String },
+  status: { type: String, enum: ['pending', 'confirmed', 'rejected'], default: 'pending' },
+  reviewNote: { type: String }, // written by the company
 });
 ```
 
