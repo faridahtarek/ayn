@@ -1,0 +1,333 @@
+/* Ayn: the styles for the whole app, matching the mockup */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #36433D;
+  color: #FFFFFF;
+}
+
+a { color: #D6EECD; }
+a:hover { color: #FFFFFF; }
+
+h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; }
+
+/* One screen, phone-sized on a phone, centred on a laptop */
+.screen {
+  position: relative;
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 52px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+
+/* The see-through "glass" used on pills and cards */
+.glass {
+  background: linear-gradient(135deg, rgba(255,236,226,0.28) 0%, rgba(233,226,255,0.12) 45%, rgba(222,238,250,0.08) 60%, rgba(255,255,255,0.16) 100%);
+  backdrop-filter: blur(10px) saturate(180%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.55), inset 0 -1px 1px rgba(255,255,255,0.14), 0 8px 24px -10px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+
+.soft-glass {
+  background: linear-gradient(150deg, rgba(229,222,255,0.13) 0%, rgba(255,255,255,0.04) 45%, rgba(212,238,224,0.10) 100%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.20), inset 0 -1px 1px rgba(255,255,255,0.05), 0 16px 32px -20px rgba(0,0,0,0.5);
+}
+
+/* The logo pill */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 16px 0 7px;
+  border-radius: 999px;
+  width: fit-content;
+}
+.logo-drop {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #EEF8E6, #C9EAC0 60%, #D6E9F5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#project-name { font: 600 20px Outfit, sans-serif; }
+
+/* Round buttons: back, log out */
+.icon-button {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* The big pale-green button */
+.main-button {
+  height: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #EEF8E6 0%, #C9EAC0 55%, #D6E9F5 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 24px -12px rgba(0,0,0,0.5);
+  color: #1F3326;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: 600 16px Inter, sans-serif;
+  cursor: pointer;
+}
+.main-button:hover, .icon-button:hover { filter: brightness(1.07); }
+.main-button:active, .icon-button:active { scale: 0.96; }
+
+.small { margin: 0; text-align: center; font-size: 13px; color: #E3E9E4; }
+
+/* Lab 9: the API's message, when it says no */
+.error {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #F8DCCF;
+  color: #7A2E14;
+  font-size: 13px;
+}
+
+/* ===== Sign in ===== */
+.login-screen {
+  background: url("/images/farmer.jpg") 58% 50% / cover;
+}
+.login-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(30,40,35,0.25) 0%, rgba(30,40,35,0.2) 35%, rgba(30,40,35,0.5) 70%, rgba(30,40,35,0.65) 100%);
+}
+.login-screen > * { position: relative; }
+
+.login-title {
+  margin: auto 8px 0;
+  font-size: 36px;
+  line-height: 1.08;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+}
+
+.login-form {
+  margin: 0 -4px;
+  padding: 18px;
+  border-radius: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: linear-gradient(150deg, rgba(54,67,61,0.50) 0%, rgba(54,67,61,0.38) 50%, rgba(54,67,61,0.46) 100%);
+  backdrop-filter: blur(22px) saturate(170%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.45), inset 0 -1px 1px rgba(255,255,255,0.10), 0 20px 40px -20px rgba(0,0,0,0.5);
+}
+.login-form label { font-size: 12px; color: #E3E9E4; }
+.login-form input {
+  height: 48px;
+  margin-bottom: 8px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);
+  color: #FFFFFF;
+  padding: 0 14px;
+  font: 15px Inter, sans-serif;
+}
+.login-form input::placeholder { color: #C9D2CB; }
+.login-form .main-button { margin: 4px 0 6px; }
+
+/* ===== Create account ===== */
+.register-photo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 300px;
+  background:
+    linear-gradient(180deg, rgba(54,67,61,0.2) 0%, rgba(54,67,61,0) 30%, rgba(54,67,61,0.4) 65%, #36433D 100%),
+    url("/images/farmer.jpg") 58% 45% / cover;
+}
+.register-screen > * { position: relative; }
+.register-screen > .register-photo { position: absolute; }
+
+.register-title {
+  margin-top: 70px;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+}
+.register-title h1 { margin: 0; font-size: 32px; }
+
+/* Officer or company: a two-way switch */
+.switch {
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+}
+.switch button {
+  flex: 1;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #E3E9E4;
+  font: 500 14px Inter, sans-serif;
+  cursor: pointer;
+  transition: background .3s, color .3s;
+}
+.switch button.on {
+  background: linear-gradient(135deg, #FDEFE6 0%, #EFE9FF 55%, #E3F1FB 100%);
+  box-shadow: inset 0 1px 0 #FFFFFF, 0 4px 12px -4px rgba(0,0,0,0.3);
+  color: #1C2521;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-group {
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.field-group label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: #C3CDC6;
+}
+.field-group label + label { border-top: 1px solid rgba(255,255,255,0.08); }
+.field-group label span { width: 104px; flex-shrink: 0; }
+.field-group input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font: 15px Inter, sans-serif;
+}
+.field-group input::placeholder { color: #8E9A92; }
+
+.agree {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px;
+  font-size: 13px;
+  color: #C3CDC6;
+}
+.agree input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: #C9EAC0;
+}
+
+/* ===== Home ===== */
+.home-screen {
+  background:
+    linear-gradient(180deg, rgba(54,67,61,0.1) 0%, rgba(54,67,61,0.5) 45%, #36433D 75%),
+    url("/images/farmer.jpg") 58% 40% / cover;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.who {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 999px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.who-name { font: 500 15px Outfit, sans-serif; line-height: 1.1; }
+.who-org { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.welcome {
+  margin-top: 110px;
+  padding: 18px;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.welcome .small { text-align: left; }
+.welcome h1 { margin: 0; font-size: 30px; }
+.welcome p { margin: 0; font-size: 14px; line-height: 1.5; }
+
+/* ===== Anything wider than a phone: full-screen photo, content centred.
+   The layout stretches with the window, so resizing it keeps working ===== */
+@media (min-width: 521px) {
+  .screen {
+    max-width: none;
+    padding: 104px 24px 32px;
+    align-items: center;
+    /* "safe": on a short window the page scrolls instead of cutting the form */
+    justify-content: safe center;
+    overflow: visible;
+  }
+  /* Every block keeps a readable width, in the middle */
+  .screen > * { width: min(460px, 100%); }
+
+  /* The logo and the back button stay in the top-left corner */
+  .login-top, .back-button { position: absolute !important; top: 32px; left: 24px; }
+  .login-top { width: auto; }
+  .screen > .back-button { width: 48px; }
+
+  /* Sign in: title and card together, centred */
+  .login-title { margin: 0 0 6px; text-align: center; font-size: 40px; }
+  /* Laptop sign in: the farmer photo fills the window, darker so the text reads */
+  .login-screen { background-position: 50% 60%; }
+  .login-screen::before { background: linear-gradient(180deg, rgba(30,40,35,0.4) 0%, rgba(30,40,35,0.55) 100%); }
+  .login-form { margin: 0; }
+
+  /* Create account: the photo fills the screen behind the form */
+  .register-screen > .register-photo {
+    width: auto;
+    inset: 0;
+    height: auto;
+    background:
+      linear-gradient(180deg, rgba(30,40,35,0.45) 0%, rgba(30,40,35,0.65) 100%),
+      url("/images/farmer.jpg") 50% 60% / cover;
+  }
+  .register-title { margin-top: 0; text-align: center; align-items: center; }
+  .register-form .field-group { backdrop-filter: blur(14px); }
+
+  /* Home: the header runs across the top, the card sits in the middle */
+  .home-screen {
+    justify-content: flex-start;
+    background:
+      linear-gradient(180deg, rgba(30,40,35,0.35) 0%, rgba(30,40,35,0.6) 100%),
+      url("/images/farmer.jpg") 50% 60% / cover;
+  }
+  .home-screen > .header { width: min(1100px, 100%); }
+  .home-screen > .welcome { width: min(640px, 100%); margin-top: 18vh; }
+  .who { flex: 0 1 260px; margin-left: auto; }
+}
