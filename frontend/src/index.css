@@ -1,4 +1,15 @@
 /* Ayn: the styles for the whole app, matching the mockup */
+/* The page background: soft green light, no photo */
+:root {
+  /* CSS variable: a value saved once here under a name, reused later with var(--page-bg) */
+  --page-bg:
+    /* radial-gradient: a soft circle of colour placed at x% y% that fades to transparent */
+    radial-gradient(circle at 12% 8%, rgba(201,234,192,0.22), transparent 42%),
+    radial-gradient(circle at 88% 92%, rgba(214,233,245,0.16), transparent 48%),  /* radial-gradient: soft circle of light */
+    /* linear-gradient: colours blending into each other in a straight line (at an angle or top to bottom) */
+    linear-gradient(160deg, #3D4C45 0%, #2B3631 100%);
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -11,31 +22,39 @@ body {
 a { color: #D6EECD; }
 a:hover { color: #FFFFFF; }
 
+/* negative letter-spacing: letters pulled closer together, like Apple's headlines */
 h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; }
 
 /* One screen, phone-sized on a phone, centred on a laptop */
 .screen {
+  /* position: relative: lets children with position: absolute be placed inside this element */
   position: relative;
-  min-height: 100vh;
+  min-height: 100vh;  /* vh: a percentage of the window's height (100vh = the full height) */
   max-width: 480px;
   margin: 0 auto;
   padding: 52px 16px 22px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  overflow: hidden;
+  overflow: hidden;  /* overflow: hidden: anything sticking out of the box is cut off */
 }
 
 /* The see-through "glass" used on pills and cards */
 .glass {
+  /* linear-gradient: colours blending in a line */
   background: linear-gradient(135deg, rgba(255,236,226,0.28) 0%, rgba(233,226,255,0.12) 45%, rgba(222,238,250,0.08) 60%, rgba(255,255,255,0.16) 100%);
+  /* backdrop-filter: blurs whatever is behind the element, which gives the frosted-glass look */
   backdrop-filter: blur(10px) saturate(180%);
+  /* inset shadow: drawn inside the edge; used here as a thin light line on top */
   box-shadow: inset 0 1px 1px rgba(255,255,255,0.55), inset 0 -1px 1px rgba(255,255,255,0.14), 0 8px 24px -10px rgba(0,0,0,0.4);
+  /* text-shadow: a soft shadow behind the letters so they stay readable on a photo */
   text-shadow: 0 1px 8px rgba(0,0,0,0.4);
 }
 
 .soft-glass {
+  /* linear-gradient: colours blending in a line */
   background: linear-gradient(150deg, rgba(229,222,255,0.13) 0%, rgba(255,255,255,0.04) 45%, rgba(212,238,224,0.10) 100%);
+  /* inset shadow: thin highlight inside the edge */
   box-shadow: inset 0 1px 1px rgba(255,255,255,0.20), inset 0 -1px 1px rgba(255,255,255,0.05), 0 16px 32px -20px rgba(0,0,0,0.5);
 }
 
@@ -47,21 +66,22 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   height: 44px;
   padding: 0 16px 0 13px;
   border-radius: 999px;
-  width: fit-content;
+  width: fit-content;  /* width: fit-content: only as wide as what is inside */
 }
 .logo-mark {
   width: 26px;
   height: 24px;
   display: block;
-  filter: drop-shadow(0 1px 6px rgba(0,0,0,0.35));
+  filter: drop-shadow(0 1px 6px rgba(0,0,0,0.35));  /* filter: drop-shadow: a shadow that follows the shape of the picture */
 }
+/* font: shorthand for weight, size(/line-height) and font in one line */
 #project-name { font: 600 19px Outfit, sans-serif; letter-spacing: 0.2px; }
 
 /* Round buttons: back, log out */
 .icon-button {
   width: 48px;
   height: 48px;
-  flex-shrink: 0;
+  flex-shrink: 0;  /* flex-shrink: 0: never squeezed smaller when space is short */
   border: 0;
   border-radius: 50%;
   color: #FFFFFF;
@@ -76,17 +96,19 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   height: 52px;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(135deg, #EEF8E6 0%, #C9EAC0 55%, #D6E9F5 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 24px -12px rgba(0,0,0,0.5);
+  background: linear-gradient(135deg, #EEF8E6 0%, #C9EAC0 55%, #D6E9F5 100%);  /* linear-gradient: colours blending in a line */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 24px -12px rgba(0,0,0,0.5);  /* inset shadow: thin highlight inside the edge */
   color: #1F3326;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font: 600 16px Inter, sans-serif;
+  font: 600 16px Inter, sans-serif;  /* font: weight size family */
   cursor: pointer;
 }
+/* filter: brightness(): makes it slightly lighter */
 .main-button:hover, .icon-button:hover { filter: brightness(1.07); }
+/* scale: shrinks the button a little (to 96-97%) while it is pressed */
 .main-button:active, .icon-button:active { scale: 0.96; }
 
 .small { margin: 0; text-align: center; font-size: 13px; color: #E3E9E4; }
@@ -103,21 +125,28 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
 
 /* ===== Sign in ===== */
 .login-screen {
+  /* cover: the photo fills the whole box, cropping its edges if needed (the % numbers choose which part stays in view) */
   background: url("/images/farmer.jpg") 58% 50% / cover;
 }
+/* ::before: an extra empty layer CSS draws inside the element (here: a dark tint over the photo) */
 .login-screen::before {
-  content: "";
+  content: "";  /* content: "" is required, otherwise ::before is not drawn at all */
+  /* position: absolute: taken out of the normal flow and placed with top/left/right/bottom inside the nearest relative parent */
   position: absolute;
+  /* inset: 0: short for top, right, bottom and left all 0, so it covers the whole parent */
   inset: 0;
+  /* linear-gradient: colours blending in a line */
   background: linear-gradient(180deg, rgba(30,40,35,0.25) 0%, rgba(30,40,35,0.2) 35%, rgba(30,40,35,0.5) 70%, rgba(30,40,35,0.65) 100%);
 }
+/* relative: the box absolute children sit in */
 .login-screen > * { position: relative; }
 
 .login-title {
+  /* margin-top: auto: takes all the free space above, pushing the title down to the form */
   margin: auto 8px 0;
   font-size: 36px;
   line-height: 1.08;
-  text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+  text-shadow: 0 2px 18px rgba(0,0,0,0.55);  /* text-shadow: shadow behind the letters */
 }
 
 .login-form {
@@ -127,8 +156,10 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* linear-gradient: colours blending in a line */
   background: linear-gradient(150deg, rgba(54,67,61,0.50) 0%, rgba(54,67,61,0.38) 50%, rgba(54,67,61,0.46) 100%);
-  backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);  /* backdrop-filter: blurs what is behind */
+  /* inset shadow: thin highlight inside the edge */
   box-shadow: inset 0 1px 1px rgba(255,255,255,0.45), inset 0 -1px 1px rgba(255,255,255,0.10), 0 20px 40px -20px rgba(0,0,0,0.5);
 }
 .login-form label { font-size: 12px; color: #E3E9E4; }
@@ -138,26 +169,52 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   border: 0;
   border-radius: 16px;
   background: rgba(255,255,255,0.12);
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);  /* inset shadow: thin highlight inside the edge */
   color: #FFFFFF;
   padding: 0 14px;
   font: 15px Inter, sans-serif;
 }
+/* ::placeholder: the grey hint text inside an empty input */
 .login-form input::placeholder { color: #C9D2CB; }
 .login-form .main-button { margin: 4px 0 6px; }
+.login-form .switch { margin-bottom: 8px; }
+
+/* Show / hide password: the eye button inside the box */
+/* relative: the box absolute children sit in */
+.password-box { position: relative; display: flex; flex-direction: column; }
+.password-box input { padding-right: 48px; }
+/* absolute: placed by top/left, out of the flow */
+.password-box .eye-button { position: absolute; right: 6px; top: 4px; }
+.eye-button {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;  /* flex-shrink 0: never squeezed */
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #E3E9E4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.eye-button:hover { background: rgba(255,255,255,0.1); color: #FFFFFF; }
 
 /* ===== Create account ===== */
 .register-photo {
-  position: absolute;
+  position: absolute;  /* absolute: placed by top/left, out of the flow */
   left: 0;
   right: 0;
   top: 0;
   height: 300px;
   background:
+    /* linear-gradient: colours blending in a line */
     linear-gradient(180deg, rgba(54,67,61,0.2) 0%, rgba(54,67,61,0) 30%, rgba(54,67,61,0.4) 65%, #36433D 100%),
-    url("/images/farmer.jpg") 58% 45% / cover;
+    url("/images/farmer.jpg") 58% 45% / cover;  /* cover: photo fills the box */
 }
+/* relative: the box absolute children sit in */
 .register-screen > * { position: relative; }
+/* absolute: placed by top/left, out of the flow */
 .register-screen > .register-photo { position: absolute; }
 
 .register-title {
@@ -167,7 +224,7 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   flex-direction: column;
   gap: 4px;
   font-size: 14px;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.45);  /* text-shadow: shadow behind the letters */
 }
 .register-title h1 { margin: 0; font-size: 32px; }
 
@@ -178,19 +235,21 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   border-radius: 999px;
 }
 .switch button {
+  /* flex: grow shrink width (flex: 1 = take an equal share of the space left over) */
   flex: 1;
   height: 40px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #E3E9E4;
-  font: 500 14px Inter, sans-serif;
+  font: 500 14px Inter, sans-serif;  /* font: weight size family */
   cursor: pointer;
+  /* transition: when this property changes (for example on hover), it changes smoothly over this time instead of jumping */
   transition: background .3s, color .3s;
 }
 .switch button.on {
-  background: linear-gradient(135deg, #FDEFE6 0%, #EFE9FF 55%, #E3F1FB 100%);
-  box-shadow: inset 0 1px 0 #FFFFFF, 0 4px 12px -4px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #FDEFE6 0%, #EFE9FF 55%, #E3F1FB 100%);  /* linear-gradient: colours blending in a line */
+  box-shadow: inset 0 1px 0 #FFFFFF, 0 4px 12px -4px rgba(0,0,0,0.3);  /* inset shadow: thin highlight inside the edge */
   color: #1C2521;
 }
 
@@ -215,9 +274,11 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   color: #C3CDC6;
 }
 .field-group label + label { border-top: 1px solid rgba(255,255,255,0.08); }
+/* flex-shrink 0: never squeezed */
 .field-group label span { width: 104px; flex-shrink: 0; }
 .field-group input {
-  flex: 1;
+  flex: 1;  /* flex: its share of the space */
+  /* min-width: 0: lets the item shrink below its text's width, so long text doesn't push the layout wider */
   min-width: 0;
   height: 40px;
   border: 0;
@@ -225,6 +286,7 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   color: #FFFFFF;
   font: 15px Inter, sans-serif;
 }
+/* ::placeholder: the hint text */
 .field-group input::placeholder { color: #8E9A92; }
 
 .agree {
@@ -239,24 +301,73 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   width: 22px;
   height: 22px;
   margin: 0;
-  accent-color: #C9EAC0;
+  accent-color: #C9EAC0;  /* accent-color: the colour of the ticked checkbox */
 }
 
 /* ===== Home ===== */
 .home-screen {
-  background:
-    linear-gradient(180deg, rgba(54,67,61,0.1) 0%, rgba(54,67,61,0.5) 45%, #36433D 75%),
-    url("/images/farmer.jpg") 58% 40% / cover;
+  background: var(--page-bg);  /* var(--page-bg): uses the CSS variable saved at the top of the file */
 }
 
+/* The top bar: full width, flat, and it stays at the top while you scroll */
 .header {
+  /* position: sticky: scrolls normally until it reaches the top, then stays stuck there */
+  position: sticky;
+  top: 0;
+  /* z-index: which element is in front when two overlap (higher number = in front) */
+  z-index: 20;
+  align-self: stretch;  /* align-self: stretch: this one item fills the whole width */
+  margin: -52px -16px 0; /* reach the edges of the screen */
+  padding: 10px 16px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  border-radius: 0;
+  background: rgba(43,54,49,0.72);
+  backdrop-filter: blur(18px) saturate(160%);  /* backdrop-filter: blurs what is behind */
+  box-shadow: 0 1px 0 rgba(255,255,255,0.08), 0 10px 30px -20px rgba(0,0,0,0.5);
+}
+/* The bar needs a page that scrolls normally around it */
+/* overflow: visible: content may stick out of the box (the sticky bar needs this) */
+.home-screen { overflow: visible; }
+/* Inside the bar, the logo, name and log out drop their own glass */
+/* backdrop-filter: blurs what is behind */
+.header .logo { background: none; box-shadow: none; backdrop-filter: none; height: 40px; padding: 0 10px 0 8px; }
+/* backdrop-filter: blurs what is behind; flex: its share of the space */
+.header .who { background: none; box-shadow: none; backdrop-filter: none; height: 40px; padding: 0 6px; text-align: right; margin-left: auto; flex: 0 1 auto; }
+/* backdrop-filter: blurs what is behind */
+.header .icon-button { width: 40px; height: 40px; background: rgba(255,255,255,0.08); box-shadow: none; backdrop-filter: none; }
+
+/* The navigation: a row of links in a glass pill */
+.nav {
+  /* order: moves a flex item to another place in the row without changing the JSX */
+  order: 3; /* on a phone: its own row under the logo and the name */
+  width: 100%;
+  display: flex;
+  gap: 2px;
+}
+.nav a {
+  flex: 1;  /* flex: its share of the space */
+  height: 42px;
+  padding: 0 12px;
+  border-bottom: 2px solid transparent;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  color: #E3E9E4;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;  /* white-space: nowrap: keeps the text on one line */
+  transition: background .3s, color .3s;  /* transition: changes smoothly */
 }
+.nav a:hover { color: #FFFFFF; }
+/* The page you are on: white text with a pale green line under it */
+.nav a.active { color: #FFFFFF; border-bottom-color: #C9EAC0; }
 .who {
-  flex: 1;
-  min-width: 0;
+  flex: 1;  /* flex: its share of the space */
+  min-width: 0;  /* min-width: 0: may shrink */
   height: 48px;
   padding: 0 16px;
   border-radius: 999px;
@@ -264,7 +375,9 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   flex-direction: column;
   justify-content: center;
 }
+/* font: weight size family */
 .who-name { font: 500 15px Outfit, sans-serif; line-height: 1.1; }
+/* white-space: nowrap + overflow: hidden + text-overflow: ellipsis: one line only, ending with … if it is too long; nowrap: one line; overflow hidden: cut off what sticks out */
 .who-org { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .welcome {
@@ -279,8 +392,226 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
 .welcome h1 { margin: 0; font-size: 30px; }
 .welcome p { margin: 0; font-size: 14px; line-height: 1.5; }
 
+/* ===== Use case 2: My farms ===== */
+.summary {
+  padding: 16px 18px;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.summary .small { text-align: left; }
+/* letter-spacing: tighter letters; font: weight size family */
+.summary-number { font: 300 42px Outfit, sans-serif; letter-spacing: -1px; line-height: 1.05; }
+.summary-number span { font-size: 16px; letter-spacing: 0; }
+.summary .main-button { height: 46px; text-decoration: none; font-size: 15px; }
+
+/* The filter tabs reuse the officer/company switch */
+.tabs button { font-size: 12px; height: 36px; padding: 0; }
+
+.farm-list {
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;  /* overflow hidden: cut off what sticks out */
+}
+.farm-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+.farm-card + .farm-card { border-top: 1px solid rgba(255,255,255,0.08); }
+a.farm-card:hover { background: rgba(255,255,255,0.06); color: #FFFFFF; }
+/* min-width: 0: may shrink; flex: its share of the space */
+.farm-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+/* font: weight size family */
+.farm-name { font: 500 16px Outfit, sans-serif; }
+.farm-meta { font-size: 12px; color: #C3CDC6; }
+.empty { margin: 0; padding: 18px 16px; font-size: 14px; color: #C3CDC6; text-align: center; }
+.farm-list .error { margin: 12px; }
+
+/* The farm's photo: a small square on My farms, bigger on the forms */
+.farm-thumb {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;  /* flex-shrink 0: never squeezed */
+  border-radius: 14px;
+  /* object-fit: cover: the <img> fills its box without stretching, cropping the edges */
+  object-fit: cover;
+}
+.empty-thumb {
+  background: linear-gradient(135deg, rgba(201,234,192,0.35), rgba(214,233,245,0.2));  /* linear-gradient: colours blending in a line */
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.25);  /* inset shadow: thin highlight inside the edge */
+}
+.farm-photo {
+  width: 100%;
+  height: 160px;
+  border-radius: 22px;
+  object-fit: cover;  /* object-fit: fill without stretching */
+}
+.summary-box .farm-photo { height: 120px; border-radius: 16px; }
+
+/* Status labels, in the mockup's colours */
+.chip {
+  flex-shrink: 0;  /* flex-shrink 0: never squeezed */
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+.chip-open { background: #DDEBF7; color: #1E2A36; }
+.chip-funded { background: #E5E0F7; color: #2E2550; }
+.chip-installed { background: #F6E7C8; color: #6E5212; }
+.chip-confirmed { background: #DDEFD5; color: #2C5A35; }
+
+/* ===== Use case 2: Register and Edit farm ===== */
+.form-screen {
+  background: var(--page-bg);  /* var(): the saved variable from the top */
+}
+/* My farms: the Nile and a village's fields */
+.farms-screen {
+  background: var(--page-bg);  /* var(): the saved variable from the top */
+}
+.form-top { display: flex; align-items: center; justify-content: space-between; }
+.form-top button.icon-button { padding: 0; }
+.step { height: 40px; padding: 0 16px; border-radius: 999px; display: flex; align-items: center; font-size: 13px; }
+/* text-shadow: shadow behind the letters */
+.form-title { display: flex; flex-direction: column; gap: 4px; font-size: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.45); }
+.form-title h1 { margin: 0; font-size: 30px; }
+
+.field-group select {
+  flex: 1;  /* flex: its share of the space */
+  min-width: 0;  /* min-width: 0: may shrink */
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font: 15px Inter, sans-serif;
+}
+.field-group select option { color: #1C2521; }
+
+.crop-picker { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #C3CDC6; }
+.crop-picker .switch { flex-wrap: wrap; border-radius: 22px; }
+/* flex: its share of the space */
+.crop-picker .switch button { flex: 1 0 30%; font-size: 13px; }
+
+.summary-box {
+  border-radius: 24px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+.summary-box .small { text-align: left; }
+.summary-box div { display: flex; justify-content: space-between; gap: 12px; }
+.summary-box div span:first-child { color: #C3CDC6; }
+
+.delete-button {
+  height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(248,220,207,0.14);
+  color: #F8DCCF;
+  font: 600 15px Inter, sans-serif;  /* font: weight size family */
+  cursor: pointer;
+}
+.delete-button.solid { background: #F8DCCF; color: #7A2E14; }
+
+/* "Delete this farm?" box, over the bottom of the page */
+.confirm-box {
+  /* position: fixed: stays at the same place in the window, even while the page scrolls */
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+  max-width: 456px;
+  margin: 0 auto;
+  padding: 18px;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  background: rgba(40,52,46,0.92);
+  backdrop-filter: blur(22px);  /* backdrop-filter: blurs what is behind */
+  z-index: 10;  /* z-index: higher = in front */
+}
+/* font: weight size family */
+.confirm-title { font: 500 20px Outfit, sans-serif; }
+.confirm-buttons { display: flex; gap: 10px; margin-top: 6px; }
+/* flex: its share of the space */
+.confirm-buttons button { flex: 1; }
+.cancel-button {
+  height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  color: #FFFFFF;
+  font: 600 15px Inter, sans-serif;  /* font: weight size family */
+  cursor: pointer;
+}
+
+/* The logo is a link home */
+.logo { color: #FFFFFF; text-decoration: none; }
+.logo:hover { color: #FFFFFF; }
+.ghost-button {
+  height: 50px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font: 600 15px Inter, sans-serif;  /* font: weight size family */
+  text-decoration: none;
+}
+/* brightness: slightly lighter */
+.ghost-button:hover { color: #FFFFFF; filter: brightness(1.1); }
+
+/* ===== Officer dashboard (after signing in) ===== */
+.small a { color: inherit; }
+.welcome .summary-number { margin-top: 4px; }
+/* 1fr 1fr: two equal columns (fr = a share of the free space) */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat {
+  padding: 14px 16px;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: #E3E9E4;
+}
+/* font: weight size family */
+.stat-number { font: 400 30px Outfit, sans-serif; color: #FFFFFF; line-height: 1.1; }
+.shortcuts { display: flex; gap: 10px; }
+/* flex: its share of the space */
+.shortcuts > * { flex: 1; text-decoration: none; }
+.list-title { padding: 14px 16px 6px; font-size: 12px; color: #C3CDC6; }
+
+/* ===== Logged-in pages: the layout under the top bar ===== */
+.page-layout { display: flex; flex-direction: column; gap: 14px; }
+.page-side { display: flex; flex-direction: column; gap: 14px; }
+.dashboard-screen .welcome { margin-top: 4px; }
+/* The welcome: a big headline, no card (like Apple's product pages) */
+.hero { display: flex; flex-direction: column; gap: 6px; padding: 18px 0 8px; }
+.hero-eyebrow { font-size: 14px; font-weight: 500; color: #C9EAC0; }
+.hero h1 {
+  margin: 0;
+  font: 600 40px/1.05 Inter, system-ui, sans-serif;  /* font: weight size family */
+  letter-spacing: -1.2px;  /* letter-spacing: tighter letters */
+}
+.hero p { margin: 0; font-size: 17px; color: #C3CDC6; }
+
 /* ===== Anything wider than a phone: full-screen photo, content centred.
    The layout stretches with the window, so resizing it keeps working ===== */
+/* @media: the rules inside only apply when the window is at least this wide (laptop layout) */
 @media (min-width: 521px) {
   .screen {
     max-width: none;
@@ -288,12 +619,14 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
     align-items: center;
     /* "safe": on a short window the page scrolls instead of cutting the form */
     justify-content: safe center;
-    overflow: visible;
+    overflow: visible;  /* overflow visible: may stick out */
   }
   /* Every block keeps a readable width, in the middle */
+  /* min(a, b): uses the smaller one, so it is this wide but never wider than the screen */
   .screen > * { width: min(460px, 100%); }
 
   /* The logo and the back button stay in the top-left corner */
+  /* absolute: placed by top/left, out of the flow; !important: this value wins over any other rule for the same property */
   .login-top, .back-button { position: absolute !important; top: 32px; left: 24px; }
   .login-top { width: auto; }
   .screen > .back-button { width: 48px; }
@@ -302,29 +635,476 @@ h1 { font-family: Outfit, sans-serif; font-weight: 500; letter-spacing: -0.5px; 
   .login-title { margin: 0 0 6px; text-align: center; font-size: 40px; }
   /* Laptop sign in: the farmer photo fills the window, darker so the text reads */
   .login-screen { background-position: 50% 60%; }
+  /* linear-gradient: colours blending in a line; ::before: extra layer drawn by CSS */
   .login-screen::before { background: linear-gradient(180deg, rgba(30,40,35,0.4) 0%, rgba(30,40,35,0.55) 100%); }
   .login-form { margin: 0; }
 
   /* Create account: the photo fills the screen behind the form */
   .register-screen > .register-photo {
     width: auto;
-    inset: 0;
+    inset: 0;  /* inset: 0: covers the whole parent */
     height: auto;
     background:
-      linear-gradient(180deg, rgba(30,40,35,0.45) 0%, rgba(30,40,35,0.65) 100%),
-      url("/images/farmer.jpg") 50% 60% / cover;
+      linear-gradient(180deg, rgba(30,40,35,0.45) 0%, rgba(30,40,35,0.65) 100%),  /* linear-gradient: colours blending in a line */
+      url("/images/farmer.jpg") 50% 60% / cover;  /* cover: photo fills the box */
   }
   .register-title { margin-top: 0; text-align: center; align-items: center; }
+  /* backdrop-filter: blurs what is behind */
   .register-form .field-group { backdrop-filter: blur(14px); }
 
   /* Home: the header runs across the top, the card sits in the middle */
   .home-screen {
     justify-content: flex-start;
-    background:
-      linear-gradient(180deg, rgba(30,40,35,0.35) 0%, rgba(30,40,35,0.6) 100%),
-      url("/images/farmer.jpg") 50% 60% / cover;
+    background: var(--page-bg);  /* var(): the saved variable from the top */
   }
+  /* min(): the smaller of the two */
   .home-screen > .header { width: min(1100px, 100%); }
+  /* min(): the smaller of the two; vh: % of the window height */
   .home-screen > .welcome { width: min(640px, 100%); margin-top: 18vh; }
+  /* flex: its share of the space */
   .who { flex: 0 1 260px; margin-left: auto; }
+  /* Laptop: one row; the bar's content lines up with the page (1100px) */
+  .home-screen > .header {
+    width: auto;
+    margin: -104px -40px 0;
+    /* max(a, b): uses the bigger one; calc(): does maths with sizes; 50vw is half the window's width */
+    padding: 0 max(40px, calc(50vw - 680px));
+    flex-wrap: nowrap;
+  }
+  .nav { order: 0; width: auto; margin-left: 12px; align-self: stretch; }
+  .nav a { flex: none; height: 64px; padding: 0 16px; }
+  /* flex: its share of the space */
+  .header .who { flex: 0 1 auto; }
+  /* Space under the bar */
+  .home-screen > .header + * { margin-top: 40px; }
+
+
+  /* Register and Edit farm: plain background, form centred */
+  .form-screen {
+    background: var(--page-bg);  /* var(): the saved variable from the top */
+  }
+  .farms-screen {
+    background: var(--page-bg);  /* var(): the saved variable from the top */
+  }
+  /* absolute: placed by top/left, out of the flow */
+  .form-screen > .form-top { position: absolute; top: 32px; left: 24px; right: 24px; width: auto; }
+  .form-title { text-align: center; align-items: center; }
+  /* backdrop-filter: blurs what is behind */
+  .register-form .field-group, .summary-box { backdrop-filter: blur(14px); }
+
+  /* Logged-in pages: the content lines up with the top bar (1100px) */
+  .home-screen > .page-layout,
+  /* min(): the smaller of the two */
+  .home-screen > .hero { width: min(1360px, 100%); }
+  .home-screen > .hero { padding: 24px 0 20px; }
+  .home-screen { justify-content: flex-start; padding-left: 40px; padding-right: 40px; }
+}
+
+/* ===== Wide screens: two columns under the top bar ===== */
+@media (min-width: 900px) {  /* @media: only on wider windows */
+  .page-layout { flex-direction: row; align-items: flex-start; gap: 20px; }
+  /* Left: summary and filters (My farms) or welcome and counts (Home) */
+  /* sticky: sticks to the top when scrolling; flex-shrink 0: never squeezed */
+  .page-side { width: 380px; flex-shrink: 0; position: sticky; top: 96px; }
+  /* Right: the farms, taking the rest of the width */
+  /* min-width: 0: may shrink; flex: its share of the space */
+  .page-layout > .farm-list { flex: 1; min-width: 0; }
+  /* The filters become a list down the side */
+  .page-side .tabs { flex-direction: column; border-radius: 24px; }
+  .page-side .tabs button { flex: none; height: 40px; text-align: left; padding: 0 16px; font-size: 13px; }
+  .farm-card { padding: 16px 20px; }
+  .farm-name { font-size: 17px; }
+  .farm-meta { font-size: 13px; }
+  .farm-thumb { width: 56px; height: 56px; }
+  /* letter-spacing: tighter letters */
+  .hero h1 { font-size: 72px; letter-spacing: -2.5px; }
+  .hero p { font-size: 21px; }
+  .hero-eyebrow { font-size: 17px; }
+}
+
+/* ===================================================================
+   Sleek, Apple-like look for the pages after signing in
+   (Home, My farms, Register a farm, Edit farm).
+   Sign in and Create account keep their own look above.
+   =================================================================== */
+.home-screen,
+.form-screen {
+  /* Depth: soft lights behind the page, a fine grain, then the dark green */
+  background:
+    /* a tiny SVG picture written straight inside the CSS (a data: link); feTurbulence draws random noise, which becomes the fine grain */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"),
+    radial-gradient(60% 50% at 12% 0%, rgba(201,234,192,0.24) 0%, transparent 70%),  /* radial-gradient: soft circle of light */
+    radial-gradient(50% 45% at 92% 18%, rgba(140,190,210,0.18) 0%, transparent 70%),  /* radial-gradient: soft circle of light */
+    radial-gradient(70% 60% at 50% 110%, rgba(120,170,130,0.2) 0%, transparent 70%),  /* radial-gradient: soft circle of light */
+    linear-gradient(180deg, #2A3530 0%, #1D2521 55%, #171E1B 100%);  /* linear-gradient: colours blending in a line */
+  /* background-attachment: fixed: the background stays still while the page scrolls over it */
+  background-attachment: fixed;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Flat surfaces: no gradients, glows or inner highlights, just a hairline */
+.home-screen .glass,
+.home-screen .soft-glass,
+.form-screen .glass,
+.form-screen .soft-glass {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 30px 60px -40px rgba(0,0,0,0.7);
+  backdrop-filter: none;  /* backdrop-filter: blurs what is behind */
+  text-shadow: none;  /* text-shadow: shadow behind the letters */
+}
+
+/* The top bar: thin and quiet */
+.home-screen .header {
+  background: rgba(27,34,31,0.78);
+  backdrop-filter: blur(20px) saturate(180%);  /* backdrop-filter: blurs what is behind */
+  border: 0;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.07);
+}
+.home-screen .header .logo,
+.home-screen .header .who { background: none; border: 0; }
+.home-screen .header .logo { height: 36px; padding-left: 0; }
+.nav a { font-size: 13px; font-weight: 400; color: #9DA8A2; }
+.nav a.active { color: #FFFFFF; border-bottom-color: transparent; }
+/* font: weight size family */
+.header .who-name { font: 500 13px Inter, sans-serif; }
+.header .who-org { color: #9DA8A2; }
+.header .icon-button { background: transparent; color: #C3CDC6; }
+
+/* Buttons: one solid pale green, and a quiet text link */
+.home-screen .main-button,
+.form-screen .main-button {
+  height: 44px;
+  background: #C9EAC0;
+  box-shadow: none;
+  color: #14231A;
+  font: 500 15px Inter, sans-serif;  /* font: weight size family */
+}
+.home-screen .ghost-button {
+  height: 44px;
+  background: none;
+  border: 0;
+  color: #C9EAC0;
+  font: 500 15px Inter, sans-serif;  /* font: weight size family */
+  justify-content: flex-start;
+  padding: 0 4px;
+}
+.home-screen .ghost-button:hover { text-decoration: underline; filter: none; }
+
+/* Counts: big numbers, small grey labels */
+.home-screen .stat { padding: 20px; border-radius: 22px; gap: 4px; font-size: 13px; color: #9DA8A2; }
+/* letter-spacing: tighter letters; font: weight size family */
+.home-screen .stat-number { font: 600 40px/1 Inter, sans-serif; letter-spacing: -1.2px; }
+
+/* Lists: roomy rows with hairlines */
+.home-screen .farm-list { border-radius: 22px; }
+.home-screen .list-title { padding: 18px 20px 6px; font-size: 13px; font-weight: 500; color: #9DA8A2; }
+.home-screen .farm-card { padding: 16px 20px; }
+.home-screen .farm-card + .farm-card { border-top-color: rgba(255,255,255,0.06); }
+.home-screen a.farm-card:hover { background: rgba(255,255,255,0.035); }
+/* letter-spacing: tighter letters; font: weight size family */
+.farm-name { font: 500 16px Inter, sans-serif; letter-spacing: -0.2px; }
+.farm-meta { color: #9DA8A2; }
+.farm-thumb { border-radius: 12px; }
+.empty-thumb { background: rgba(255,255,255,0.06); box-shadow: none; }
+
+/* Status: a coloured dot and text instead of a filled label */
+.home-screen .chip { height: auto; padding: 0; background: none; font-size: 13px; font-weight: 500; gap: 8px; }
+/* ::before: extra layer drawn by CSS; content: "": needed for ::before to show; currentColor: uses the element's own text colour, so the dot matches its label */
+.home-screen .chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.home-screen .chip-open { color: #9CC7F0; }
+.home-screen .chip-funded { color: #C3B5F5; }
+.home-screen .chip-installed { color: #F2D28A; }
+.home-screen .chip-confirmed { color: #A8DC98; }
+
+/* Filters: a plain segmented control */
+.home-screen .switch { padding: 3px; }
+.home-screen .switch button { color: #9DA8A2; font-weight: 500; }
+.home-screen .switch button.on { background: rgba(255,255,255,0.14); box-shadow: none; color: #FFFFFF; }
+
+/* My farms: the summary as plain text, like the Home headline */
+.home-screen .summary { background: none; border: 0; padding: 0 2px; gap: 12px; }
+.home-screen .summary .small { font-size: 14px; font-weight: 500; color: #C9EAC0; }
+/* letter-spacing: tighter letters; font: weight size family */
+.home-screen .summary-number { font: 600 40px/1 Inter, sans-serif; letter-spacing: -1.2px; }
+.home-screen .summary-number span { font-weight: 400; color: #9DA8A2; letter-spacing: 0; }
+
+/* Register and Edit farm: flat fields, Apple-style headings */
+/* text-shadow: shadow behind the letters */
+.form-screen .form-title { text-shadow: none; color: #9DA8A2; }
+/* letter-spacing: tighter letters; font: weight size family */
+.form-screen .form-title h1 { font: 600 34px/1.1 Inter, sans-serif; letter-spacing: -1px; color: #FFFFFF; }
+.form-screen .field-group label { color: #9DA8A2; }
+.form-screen .icon-button,
+/* backdrop-filter: blurs what is behind */
+.form-screen .step { background: rgba(255,255,255,0.06); border: 0; box-shadow: none; backdrop-filter: none; }
+.form-screen .switch button { color: #9DA8A2; }
+.form-screen .switch button.on { background: rgba(255,255,255,0.14); box-shadow: none; color: #FFFFFF; }
+.form-screen .delete-button { background: none; color: #F4A98A; }
+.form-screen .delete-button.solid { background: #F4A98A; color: #3A160A; }
+.form-screen .confirm-box { background: #2A3430; border: 1px solid rgba(255,255,255,0.08); }
+
+@media (min-width: 900px) {  /* @media: only on wider windows */
+  .home-screen .stat-number,
+  .home-screen .summary-number { font-size: 48px; }
+  /* letter-spacing: tighter letters */
+  .form-screen .form-title h1 { font-size: 48px; letter-spacing: -1.6px; }
+  .page-side .tabs { border-radius: 18px; }
+}
+
+/* ===================================================================
+   Landing page: a long overview, like an Apple product page
+   =================================================================== */
+.landing {
+  min-height: 100vh;  /* vh: % of the window height */
+  background: #1C2420; /* one solid colour all the way down */
+  color: #FFFFFF;
+  font-family: Inter, system-ui, sans-serif;
+}
+.landing h1, .landing h2, .landing h3 { font-family: Inter, system-ui, sans-serif; }
+
+/* Thin bar that stays at the top */
+.landing-bar {
+  position: sticky;  /* sticky: sticks to the top when scrolling */
+  top: 0;
+  z-index: 20;  /* z-index: higher = in front */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(28,36,32,0.8);
+  backdrop-filter: blur(20px) saturate(180%);  /* backdrop-filter: blurs what is behind */
+  box-shadow: 0 1px 0 rgba(255,255,255,0.07);
+}
+/* backdrop-filter: blurs what is behind; text-shadow: shadow behind the letters */
+.landing-bar .logo { background: none; box-shadow: none; backdrop-filter: none; border: 0; padding-left: 0; text-shadow: none; }
+.landing-links { display: flex; align-items: center; gap: 4px; }
+.landing-links a { padding: 8px 10px; color: #C3CDC6; font-size: 13px; text-decoration: none; }
+.landing-links a:hover { color: #FFFFFF; }
+/* a[href^="#"]: links whose address starts with #, i.e. links to a section of this same page */
+.landing-links a[href^="#"] { display: none; } /* on a phone, only Sign in and Create account */
+.landing-links .landing-pill { padding: 7px 14px; border-radius: 999px; background: #C9EAC0; color: #14231A; font-weight: 500; }
+/* brightness: slightly lighter */
+.landing-links .landing-pill:hover { color: #14231A; filter: brightness(1.05); }
+
+/* Shared pieces */
+.landing-eyebrow { font-size: 15px; font-weight: 600; color: #C9EAC0; }
+.landing-button {
+  display: inline-flex;  /* inline-flex: a flex box that sits in a line like a word */
+  align-items: center;
+  height: 46px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #C9EAC0;
+  color: #14231A;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+/* brightness: slightly lighter */
+.landing-button:hover { color: #14231A; filter: brightness(1.05); }
+.landing-link { color: #C9EAC0; font-size: 16px; font-weight: 500; text-decoration: none; }
+.landing-link:hover { color: #C9EAC0; text-decoration: underline; }
+.landing section { padding: 72px 20px; max-width: 1100px; margin: 0 auto; }
+/* letter-spacing: tighter letters */
+.landing h2 { margin: 10px 0 0; font-size: 34px; font-weight: 600; line-height: 1.1; letter-spacing: -1px; }
+.landing h2 span, .landing h1 span { color: #7E8B84; }
+
+/* 1. The headline */
+.landing-hero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+/* letter-spacing: tighter letters */
+.landing-hero h1 { margin: 0; font-size: 44px; font-weight: 700; line-height: 1.05; letter-spacing: -1.6px; }
+.landing-hero p { margin: 0; max-width: 560px; font-size: 18px; line-height: 1.5; color: #C3CDC6; }
+.landing-actions { display: flex; align-items: center; gap: 22px; margin-top: 6px; flex-wrap: wrap; justify-content: center; }
+
+/* Photo bands: the photo stays still, so it slides under the page as you scroll */
+.landing-band {
+  height: 300px;
+  background-size: cover;  /* cover: photo fills the box */
+  background-position: center;
+  background-attachment: fixed;  /* attachment fixed: background stays still */
+}
+.landing-band.tall { height: 420px; }
+
+/* 2. The problem: one big sentence */
+.landing-statement h2 { font-size: 34px; max-width: 900px; }
+
+/* 3. How it works: text and photo side by side */
+.landing-steps > h2 { margin-bottom: 36px; }
+.landing-step {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.landing-step-number { font-size: 14px; font-weight: 600; color: #7E8B84; }
+/* letter-spacing: tighter letters */
+.landing-step h3 { margin: 6px 0 8px; font-size: 26px; font-weight: 600; letter-spacing: -0.6px; }
+.landing-step p { margin: 0; font-size: 17px; line-height: 1.55; color: #C3CDC6; }
+/* cover: photo fills the box */
+.landing-step-photo { height: 220px; border-radius: 22px; background-size: cover; background-position: center; }
+
+/* 4. Who it's for: two flat cards */
+.landing-who-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 32px; }
+.landing-who-card {
+  padding: 28px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* letter-spacing: tighter letters */
+.landing-who-card h3 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
+.landing-who-card p { margin: 0; font-size: 16px; line-height: 1.55; color: #C3CDC6; }
+
+/* 5. The last call to action */
+.landing-final { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.landing-final h2 { font-size: 40px; }
+
+.landing-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 20px 40px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 12px;
+  color: #7E8B84;
+  text-align: center;
+}
+.landing-footer .logo-mark { width: 30px; height: 28px; opacity: 0.7; }
+
+/* Laptop and wider */
+@media (min-width: 900px) {  /* @media: only on wider windows */
+  /* max(): the bigger of the two; calc(): maths with sizes */
+  .landing-bar { padding: 8px max(40px, calc(50vw - 550px)); }
+  .landing-links a[href^="#"] { display: block; }
+  .landing section { padding: 120px 40px; }
+  /* !important: always wins */
+  .landing-hero { padding-top: 140px !important; padding-bottom: 80px !important; }
+  /* letter-spacing: tighter letters */
+  .landing-hero h1 { font-size: 80px; letter-spacing: -3px; }
+  .landing-hero h1 span { display: block; }
+  .landing-hero p { font-size: 22px; }
+  /* letter-spacing: tighter letters */
+  .landing h2 { font-size: 56px; letter-spacing: -2px; }
+  .landing-statement h2 { font-size: 56px; }
+  .landing-band { height: 520px; }
+  .landing-band.tall { height: 680px; }
+  .landing-step { flex-direction: row; align-items: center; gap: 60px; padding: 48px 0; }
+  /* :nth-of-type(even): every second step, so the photo swaps sides each time */
+  .landing-step:nth-of-type(even) { flex-direction: row-reverse; }
+  /* flex: its share of the space */
+  .landing-step-text, .landing-step-photo { flex: 1; }
+  .landing-step-photo { height: 340px; border-radius: 28px; }
+  /* letter-spacing: tighter letters */
+  .landing-step h3 { font-size: 36px; letter-spacing: -1px; }
+  .landing-who-grid { flex-direction: row; }
+  /* flex: its share of the space */
+  .landing-who-card { flex: 1; padding: 40px; }
+  .landing-final h2 { font-size: 64px; }
+}
+
+/* ===================================================================
+   Smooth page changes: every page fades in and rises a little
+   (React Router shows a new page on each address, so this runs each time)
+   =================================================================== */
+/* @keyframes: names an animation and says how the element looks at the start (from) and the end (to) */
+@keyframes page-in {
+  /* translateY(12px): moved 12px down; the animation slides it up to its place */
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.screen > *:not(.header):not(.register-photo),
+.landing > *:not(.landing-bar):not(.landing-band) {
+  /* "backwards": once the rise ends, nothing stays on the element */
+  /* animation: which @keyframes to play, how long, the speed curve (cubic-bezier: fast start, soft stop) and "backwards" (show the start state while waiting) */
+  animation: page-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+/* Photo bands only fade (moving them would switch off the sliding photo) */
+/* animation: plays the @keyframes */
+.landing > .landing-band { animation: page-fade 0.55s ease backwards; }
+/* The parts of a page arrive one after another */
+/* :nth-child(n): picks the n-th child inside its parent; animation-delay: waits this long before starting, so the parts arrive one after another */
+.screen > *:nth-child(2), .landing > *:nth-child(2) { animation-delay: 0.04s; }
+/* :nth-child: the n-th child; animation-delay: start a bit later */
+.screen > *:nth-child(3), .landing > *:nth-child(3) { animation-delay: 0.08s; }
+/* :nth-child: the n-th child; animation-delay: start a bit later */
+.screen > *:nth-child(4), .landing > *:nth-child(4) { animation-delay: 0.12s; }
+/* :nth-child: the n-th child; animation-delay: start a bit later */
+.screen > *:nth-child(5), .landing > *:nth-child(5) { animation-delay: 0.16s; }
+/* The background fades in too, so the change never flashes */
+/* animation: plays the @keyframes */
+.screen, .landing { animation: page-fade 0.35s ease backwards; }
+/* @keyframes: an animation's start and end */
+@keyframes page-fade { from { opacity: 0.6; } to { opacity: 1; } }
+/* Buttons and links react softly */
+.main-button, .ghost-button, .landing-button, .landing-pill, .nav a, .farm-card {
+  transition: filter .2s, background-color .2s, color .2s, transform .2s;  /* transition: changes smoothly */
+}
+/* scale: shrinks a little when pressed */
+.main-button:active, .landing-button:active { transform: scale(0.97); }
+/* prefers-reduced-motion: if the user turned on "reduce motion" in their computer's settings, all animations are switched off */
+@media (prefers-reduced-motion: reduce) {
+  /* ::before: extra layer drawn by CSS; !important: always wins; animation: plays the @keyframes; transition: changes smoothly */
+  *, *::before { animation: none !important; transition: none !important; }
+}
+
+/* ===================================================================
+   Officer Home, refined
+   =================================================================== */
+.dashboard-screen .hero { padding-bottom: 4px; }
+.hero-actions { display: flex; align-items: center; gap: 18px; margin-top: 10px; }
+.hero-actions .main-button { padding: 0 22px; text-decoration: none; }
+.home-screen .hero-actions .ghost-button { padding: 0; }
+
+/* "Your farms at a glance" */
+.overview { padding: 22px; border-radius: 24px; display: flex; flex-direction: column; gap: 20px; }
+/* baseline: lines the two texts up along the bottom of their letters */
+.overview-head { display: flex; justify-content: space-between; align-items: baseline; }
+.overview-title { font-size: 15px; font-weight: 600; }
+.overview-total { font-size: 13px; color: #9DA8A2; }
+/* 1fr 1fr: two equal columns */
+.overview-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 12px; }
+/* 10px 1fr: a 10px column for the dot, the rest for the text */
+.overview-number { display: grid; grid-template-columns: 10px 1fr; column-gap: 8px; align-items: center; }
+/* grid-column / grid-row: which column or row of the grid this item goes in; letter-spacing: tighter letters; font: weight size family */
+.overview-count { grid-column: 2; font: 600 34px/1.05 Inter, sans-serif; letter-spacing: -1px; }
+/* grid-column/row: its cell in the grid */
+.overview-label { grid-column: 2; font-size: 13px; color: #9DA8A2; }
+/* grid-column/row: its cell in the grid */
+.dot { grid-row: 1; width: 8px; height: 8px; border-radius: 50%; }
+.dot-open, .bar-open { background: #9CC7F0; }
+.dot-funded, .bar-funded { background: #C3B5F5; }
+.dot-installed, .bar-installed { background: #F2D28A; }
+.dot-confirmed, .bar-confirmed { background: #A8DC98; }
+/* The bar split by status */
+.overview-bar { display: flex; gap: 3px; height: 8px; }
+/* transition: changes smoothly */
+.overview-bar span { border-radius: 999px; transition: width .6s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* The latest farms list, with a "See all" link */
+.list-head { display: flex; justify-content: space-between; align-items: center; padding-right: 20px; }
+.list-head .list-title { padding-bottom: 10px; }
+.list-link { font-size: 13px; color: #C9EAC0; text-decoration: none; padding-top: 8px; }
+.list-link:hover { color: #C9EAC0; text-decoration: underline; }
+
+@media (min-width: 900px) {  /* @media: only on wider windows */
+  .dashboard-screen > .overview,
+  /* min(): the smaller of the two */
+  .dashboard-screen > .farm-list { width: min(1360px, 100%); }
+  .overview { padding: 32px 36px; border-radius: 28px; }
+  /* repeat(4, 1fr): four equal columns */
+  .overview-numbers { grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .overview-number { padding: 0 24px; border-left: 1px solid rgba(255,255,255,0.08); }
+  .overview-number:first-child { padding-left: 0; border-left: 0; }
+  /* letter-spacing: tighter letters */
+  .overview-count { font-size: 56px; letter-spacing: -2px; }
+  .overview-label { font-size: 14px; }
+  .overview-bar { height: 10px; }
+  .dashboard-screen .farm-list { border-radius: 28px; }
 }

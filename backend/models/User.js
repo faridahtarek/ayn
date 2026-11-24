@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   // Never the password itself: a bcrypt hash of it
   password: { type: String, required: true },
   // Chosen on the registration form
+  // Not in the lab: enum = only these values are allowed (MongoDB refuses others);
+  // default = the value used when none is sent
   role: { type: String, enum: ["officer", "company"], default: "officer" },
   // The cooperative or the company's name
   organisation: { type: String },
