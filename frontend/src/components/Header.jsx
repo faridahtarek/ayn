@@ -17,6 +17,9 @@ function Header({ user, onLogOut }) {
         <NavLink to="/" end>Home</NavLink>
         {isOfficer && <NavLink to="/farms" end>My farms</NavLink>}
         {isOfficer && <NavLink to="/farms/new">Register a farm</NavLink>}
+        {/* Use case 3: a company's pages */}
+        {!isOfficer && <NavLink to="/browse">Fund a farm</NavLink>}
+        {!isOfficer && <NavLink to="/funded">My farms funded</NavLink>}
       </nav>
 
       <div className="who">

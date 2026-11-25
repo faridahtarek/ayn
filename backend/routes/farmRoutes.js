@@ -3,6 +3,7 @@ import express from "express";
 import { requireAuth } from "../middleware/auth.js";
 import {
   handleGetMine,
+  handleGetOpen,
   handleGetOne,
   handleCreate,
   handleUpdate,
@@ -12,8 +13,9 @@ import {
 const router = express.Router();
 
 // Every farm route needs a login: requireAuth runs first
-// "/mine" comes before "/:id", or Express would read "mine" as an id
+// "/mine" and "/open" come before "/:id", or Express would read them as an id
 router.get("/mine", requireAuth, handleGetMine);
+router.get("/open", requireAuth, handleGetOpen); // use case 3: companies only
 router.get("/:id", requireAuth, handleGetOne);
 router.post("/", requireAuth, handleCreate);
 router.put("/:id", requireAuth, handleUpdate);

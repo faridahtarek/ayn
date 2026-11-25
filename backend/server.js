@@ -4,6 +4,7 @@ import cors from "cors";
 import { connectDB } from "./db.js";
 import authRoutes from "./routes/authRoutes.js";
 import farmRoutes from "./routes/farmRoutes.js";
+import fundingRoutes from "./routes/fundingRoutes.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get("/api/health", (req, res) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api/farms", farmRoutes);
+app.use("/api/fundings", fundingRoutes);
 
 // ========== START ==========
 await connectDB();

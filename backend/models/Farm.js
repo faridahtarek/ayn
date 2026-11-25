@@ -36,6 +36,12 @@ export async function getFarmsByOfficer(officerId) {
   return Farm.find({ officer: officerId });
 }
 
+// Use case 3: every farm still waiting for a company, from every cooperative
+// find({ status: "open" }) keeps only the documents whose status is "open"
+export async function getOpenFarms() {
+  return Farm.find({ status: "open" });
+}
+
 export async function getFarmById(id) {
   // "abc" can never be an _id: not found
   if (!mongoose.isValidObjectId(id)) return null;

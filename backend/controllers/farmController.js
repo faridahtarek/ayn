@@ -2,6 +2,7 @@
 // Read the request, call the model, send the response
 import {
   getFarmsByOfficer,
+  getOpenFarms,
   getFarmById,
   addFarm,
   updateFarm,
@@ -37,6 +38,15 @@ function pickFields(data) {
 // GET /api/farms/mine: the logged-in officer's farms
 export async function handleGetMine(req, res) {
   res.json(await getFarmsByOfficer(req.user.id));
+}
+
+// GET /api/farms/open: the farms waiting for a company (use case 3)
+export async function handleGetOpen(req, res) {
+  // Only companies browse farms to fund
+  if (req.user.role !== "company") {
+    return res.status(403).json({ error: "Only companies can browse farms to fund" });
+  }
+  res.json(await getOpenFarms());
 }
 
 // GET /api/farms/:id: one farm

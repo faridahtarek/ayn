@@ -22,6 +22,13 @@ export async function getMyFarms() {
   return res.json();
 }
 
+// Use case 3: the farms waiting for a company (companies only)
+export async function getOpenFarms() {
+  const res = await fetch(`${API}/open`, { headers: authHeader() });
+  if (!res.ok) throw await errorFrom(res);
+  return res.json();
+}
+
 export async function createFarm(farm) {
   const res = await fetch(API, {
     method: "POST",

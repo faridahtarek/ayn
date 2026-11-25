@@ -1108,3 +1108,310 @@ a.farm-card:hover { background: rgba(255,255,255,0.06); color: #FFFFFF; }
   .overview-bar { height: 10px; }
   .dashboard-screen .farm-list { border-radius: 28px; }
 }
+
+
+/* ===================================================================
+   Use case 3: Company funds a farm
+   The company's pages lean on the landscape photos: numbers sitting on the
+   fields, photo cards, and a framed card floating over an aerial shot.
+   Every class starts with "co-" (company), so the officer's pages never change
+   =================================================================== */
+
+/* --- The photo hero: headline and numbers on a photo of the fields --- */
+.co-hero {
+  position: relative;  /* relative: the box its absolute children sit in */
+  min-height: 440px;
+  margin-top: 8px;
+  padding: 28px 22px;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* space-between: the text at the top, the numbers at the bottom */
+  gap: 28px;
+  overflow: hidden;  /* overflow hidden: the photo keeps the rounded corners */
+  background-size: cover;  /* cover: the photo fills the box */
+  background-position: center;
+  box-shadow: 0 40px 80px -50px rgba(0,0,0,0.8);
+}
+/* A dark veil over the photo, darker at the top and bottom where the text is.
+   ::before: an extra layer CSS draws inside the element */
+.co-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;  /* inset: 0: covers the whole hero */
+  background: linear-gradient(180deg, rgba(16,24,20,0.72) 0%, rgba(16,24,20,0.15) 45%, rgba(16,24,20,0.8) 100%);
+}
+/* relative: the text sits above the veil */
+.co-hero > * { position: relative; }
+.co-hero-short { min-height: 300px; padding-bottom: 60px; justify-content: flex-end; }
+.co-hero-text { display: flex; flex-direction: column; gap: 8px; }
+.co-hero-text h1 {
+  margin: 0;
+  font: 600 40px/1.02 Inter, system-ui, sans-serif;  /* font: weight size/line-height family */
+  letter-spacing: -1.4px;  /* letter-spacing: tighter letters */
+  text-shadow: 0 2px 24px rgba(0,0,0,0.35);  /* text-shadow: keeps it readable on the photo */
+}
+.co-hero-text p { margin: 0; max-width: 560px; font-size: 17px; line-height: 1.45; color: #E3E9E4; }
+.co-light-link { color: #FFFFFF; font: 500 15px Inter, sans-serif; text-decoration: none; }
+.co-light-link:hover { color: #FFFFFF; text-decoration: underline; }
+
+/* The numbers on the photo: each with a thin white line above it, like a label on a map */
+/* repeat(3, 1fr): three equal columns */
+.co-hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.co-stat {
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;  /* min-width: 0: may shrink */
+}
+/* font: weight size family; letter-spacing: tighter letters */
+.co-stat-number { font: 700 26px/1 Outfit, sans-serif; letter-spacing: -0.6px; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+.co-stat-label { font-size: 12px; color: #E3E9E4; }
+
+/* The 3 counts of the farms it funded: 3 columns instead of the officer's 4 */
+.co-overview-numbers { grid-template-columns: repeat(3, 1fr); }
+
+/* --- Sections and the photo cards --- */
+.co-section { display: flex; flex-direction: column; gap: 14px; }
+.co-section-head { display: flex; justify-content: space-between; align-items: baseline; }
+/* letter-spacing: tighter letters */
+.co-section-head h2 { margin: 0; font: 600 24px Inter, sans-serif; letter-spacing: -0.6px; }
+/* The cards: one column on a phone, more as the window widens.
+   repeat(auto-fill, minmax(240px, 1fr)): as many columns as fit, each at least 240px wide */
+.co-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+
+.co-tile {
+  border-radius: 24px;
+  overflow: hidden;  /* overflow hidden: the photo keeps the rounded corners */
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: transform .25s, border-color .25s;  /* transition: changes smoothly */
+}
+/* translateY(-3px): lifts the card a little under the mouse */
+.co-tile:hover { color: #FFFFFF; transform: translateY(-3px); border-color: rgba(201,234,192,0.35); }
+.co-tile-photo {
+  position: relative;  /* relative: the badges sit inside it */
+  height: 170px;
+  background-size: cover;  /* cover: the photo fills the box */
+  background-position: center;
+}
+.co-tile-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 4px; }
+/* letter-spacing: tighter letters */
+.co-tile-name { font: 600 18px Inter, sans-serif; letter-spacing: -0.3px; }
+.co-tile-meta { font-size: 13px; color: #9DA8A2; }
+.co-tile-foot {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.co-tile-price { font: 600 15px Inter, sans-serif; }
+.co-tile-action { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: #C9EAC0; }
+
+/* Small badges on a photo: dark glass with white text */
+.co-badge {
+  position: absolute;  /* absolute: placed by top/left on the photo */
+  top: 12px;
+  left: 12px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(20,28,24,0.6);
+  backdrop-filter: blur(12px);  /* backdrop-filter: blurs the photo behind it */
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+/* The status badge goes on the right, with a dot in its colour */
+.co-status { left: auto; right: 12px; display: flex; align-items: center; gap: 7px; }
+/* currentColor would be white here, so each status sets the dot's colour */
+.co-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; }
+.co-status-open::before { background: #9CC7F0; }
+.co-status-funded::before { background: #C3B5F5; }
+.co-status-installed::before { background: #F2D28A; }
+.co-status-confirmed::before { background: #A8DC98; }
+/* "Library photo": tiny, bottom right */
+.co-photo-note {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  color: rgba(255,255,255,0.75);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+}
+
+/* --- Browse: the filter bar over the photo's bottom edge --- */
+.co-filter-bar {
+  position: relative;
+  z-index: 2;  /* z-index: in front of the photo above it */
+  margin-top: -40px;  /* pulled up so it overlaps the photo */
+  margin-left: 12px;
+  margin-right: 12px;
+  padding: 6px;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(30,40,35,0.86);
+  backdrop-filter: blur(20px) saturate(160%);  /* backdrop-filter: blurs what is behind */
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 24px 50px -24px rgba(0,0,0,0.7);
+}
+.co-filter-bar label {
+  flex: 1;  /* flex: its share of the space */
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;  /* text-transform: uppercase: capital letters */
+  color: #9DA8A2;
+}
+.co-filter-bar label + label { border-top: 1px solid rgba(255,255,255,0.08); }
+.co-filter-bar select {
+  margin-left: -4px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font: 500 15px Inter, sans-serif;
+  text-transform: none;
+  cursor: pointer;
+}
+.co-filter-bar select option { color: #1C2521; }
+
+/* My farms funded: the tabs over the photo's bottom edge, like the filter bar */
+.co-tabs {
+  position: relative;
+  z-index: 2;
+  margin-top: -30px;
+  margin-left: 12px;
+  margin-right: 12px;
+  background: rgba(30,40,35,0.86) !important;  /* !important: wins over the flat look of .home-screen .switch */
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.co-tabs button { font-size: 13px; }
+
+/* --- Fund this kit: a framed card floating over an aerial photo --- */
+/* .form-screen.co-photo-screen: both classes, so it wins over the plain background above */
+.form-screen.co-photo-screen {
+  background:
+    linear-gradient(180deg, rgba(16,24,20,0.55) 0%, rgba(16,24,20,0.35) 40%, rgba(16,24,20,0.8) 100%),
+    url("/images/company/luxor-fields.jpg") center / cover;  /* cover: photo fills the box */
+  background-attachment: fixed;  /* fixed: the photo stays still while the card scrolls */
+}
+.co-frame {
+  padding: 10px;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(24,32,28,0.82);
+  backdrop-filter: blur(24px) saturate(160%);  /* backdrop-filter: blurs the photo behind it */
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 50px 100px -40px rgba(0,0,0,0.8);
+}
+/* Everything in the frame except the photo gets a little side room */
+.co-frame > *:not(.co-frame-photo) { margin-left: 8px; margin-right: 8px; }
+.co-frame > .main-button { margin-bottom: 0; }
+.co-frame > .small { margin-bottom: 8px; color: #9DA8A2; }
+.co-frame-head {
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;  /* flex-wrap: the pills drop under the name on a narrow phone */
+}
+/* letter-spacing: tighter letters */
+.co-frame-head h1 { margin: 0; font: 600 26px/1.1 Inter, sans-serif; letter-spacing: -0.8px; }
+/* A monospace font for the farm number, like a code */
+.co-frame-id { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9DA8A2; }
+.co-pills { display: flex; gap: 6px; }
+.co-pill {
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  font: 500 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.co-pill span { color: #9DA8A2; }
+.co-frame-photo {
+  position: relative;  /* relative: the badges and target sit inside it */
+  height: 230px;
+  border-radius: 24px;
+  overflow: hidden;
+  background-size: cover;  /* cover: photo fills the box */
+  background-position: center;
+}
+/* The target over the farm: thin white lines */
+.co-target {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170px;
+  height: 170px;
+  transform: translate(-50%, -50%);  /* translate(-50%, -50%): centres it exactly */
+  fill: none;
+  stroke: rgba(255,255,255,0.75);
+  stroke-width: 1;
+}
+/* The kit cost, bottom left on the photo */
+.co-kit-cost {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: rgba(20,28,24,0.66);
+  backdrop-filter: blur(12px);  /* backdrop-filter: blurs the photo behind it */
+  font-size: 13px;
+  color: #E3E9E4;
+}
+.co-kit-cost strong { color: #FFFFFF; font-weight: 600; }
+
+/* The total line of "What you commit": a hairline above it, the amount in white */
+.summary-box .summary-total { padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
+.summary-box .summary-total span:last-child { color: #FFFFFF; }
+
+/* Laptop and wider: the company's pages line up with the top bar, like the officer's */
+@media (min-width: 521px) {  /* @media: only on wider windows */
+  /* min(): the smaller of the two */
+  .co-screen > .co-hero,
+  .co-screen > .overview,
+  .co-screen > .co-section,
+  .co-screen > .co-filter-bar,
+  .co-screen > .co-tabs { width: min(1360px, 100%); }
+  .co-screen > .co-filter-bar,
+  .co-screen > .co-tabs { width: min(1360px - 80px, calc(100% - 48px)); }
+  .co-filter-bar { flex-direction: row; }
+  .co-filter-bar label + label { border-top: 0; border-left: 1px solid rgba(255,255,255,0.08); }
+  .co-tabs { width: auto !important; align-self: center; }
+  .co-tabs button { padding: 0 22px; }
+  .form-screen > .co-frame { width: min(560px, 100%); }
+  .co-frame-photo { height: 280px; }
+}
+@media (min-width: 900px) {  /* @media: only on wider windows */
+  .co-hero { min-height: 540px; padding: 48px 52px 44px; border-radius: 36px; }
+  .co-hero-short { min-height: 360px; }
+  /* letter-spacing: tighter letters */
+  .co-hero-text h1 { font-size: 72px; letter-spacing: -2.6px; }
+  .co-hero-text p { font-size: 20px; }
+  .co-hero-stats { gap: 40px; max-width: 980px; }
+  .co-stat-number { font-size: 54px; letter-spacing: -1.6px; }
+  .co-stat-label { font-size: 14px; }
+  .co-section-head h2 { font-size: 34px; letter-spacing: -1px; }
+  .co-overview-numbers { grid-template-columns: repeat(3, 1fr); }
+  .co-tile-photo { height: 200px; }
+  .co-frame-head h1 { font-size: 30px; }
+}
