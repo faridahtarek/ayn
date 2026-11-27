@@ -1415,3 +1415,55 @@ a.farm-card:hover { background: rgba(255,255,255,0.06); color: #FFFFFF; }
   .co-tile-photo { height: 200px; }
   .co-frame-head h1 { font-size: 30px; }
 }
+
+/* ===== Use case 4: a farm's page and its proof (use case 3's card) ===== */
+/* The proof's status dot on the photo, like use case 3's farm statuses */
+.co-status-pending::before { background: #F2D28A; }
+.co-status-rejected::before { background: #F4A98A; }
+/* A link that looks like the green button (Add proof, Edit proof) */
+.form-screen a.main-button { text-decoration: none; }
+/* The company's note after a rejection */
+.review-note { margin: 0; font-size: 14px; line-height: 1.5; color: #F4A98A; }
+/* Status update: 4 steps side by side, each with a bar on top (lit when done) */
+.steps { margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; }
+.steps li { flex: 1; padding-top: 8px; border-top: 3px solid rgba(255,255,255,0.12); font-size: 12px; color: #9DA8A2; }
+.steps li.done { border-top-color: #C9EAC0; color: #FFFFFF; }
+.next-step { font-size: 14px; color: #C9EAC0; }
+/* The "Next: ..." line on each farm row */
+.farm-next { font-size: 12px; color: #C9EAC0; }
+
+/* ===== Use case 2: the same photo background as use case 3 ===== */
+/* Both classes, so it wins over the plain backgrounds above */
+.screen.photo-screen {
+  background:
+    linear-gradient(180deg, rgba(16,24,20,0.55) 0%, rgba(16,24,20,0.35) 40%, rgba(16,24,20,0.8) 100%),
+    url("/images/company/luxor-fields.jpg") center / cover;
+  background-attachment: fixed;  /* the photo stays still while the page scrolls */
+}
+/* Over a photo, the boxes are darker (like use case 3's card) so the text reads */
+.photo-screen .farm-list,
+.photo-screen .tabs,
+.photo-screen .field-group,
+.photo-screen .summary-box,
+.photo-screen .crop-picker .switch {
+  background: rgba(24,32,28,0.82);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(24px);
+}
+
+/* ===== Use case 4: two columns inside the card ===== */
+/* On a phone the two columns stack, one under the other */
+.frame-columns, .frame-left, .frame-right { display: flex; flex-direction: column; gap: 12px; }
+.co-frame > .frame-columns { margin-left: 0; margin-right: 0; }
+.frame-left > .summary-box, .frame-right > * { margin-left: 8px; margin-right: 8px; }
+@media (min-width: 900px) {
+  /* The card starts at the top and uses the width of the page, not a narrow middle column */
+  .form-screen.wide-screen { justify-content: flex-start; padding: 104px 40px 40px; }
+  .form-screen.wide-screen > .co-frame { width: min(1280px, 100%); }
+  /* Side by side: the photo side a bit wider than the details side */
+  .frame-columns { flex-direction: row; align-items: flex-start; }
+  .frame-left { flex: 3; min-width: 0; }
+  .frame-right { flex: 2; min-width: 0; }
+  .frame-right > * { margin-left: 0; }
+  .wide-frame .co-frame-photo { height: 420px; }
+}

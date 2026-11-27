@@ -20,7 +20,7 @@ function greeting() {
   return "Good evening";
 }
 
-function DashboardPage({ user, farms, loading, error, onLogOut }) {
+function DashboardPage({ user, farms, proofs, loading, error, onLogOut }) {
   // Add up the feddans, and count the farms in each status
   // forEach runs the arrow function once per farm; += adds its feddans to the total
   let totalFeddans = 0;
@@ -105,7 +105,7 @@ function DashboardPage({ user, farms, loading, error, onLogOut }) {
           <p className="empty">No farms yet. Register your first farm.</p>
         )}
         {latest.map((farm) => (
-          <FarmCard key={farm._id} farm={farm} />
+          <FarmCard key={farm._id} farm={farm} proof={proofs.find((p) => p.farm === farm._id)} />
         ))}
       </section>
     </div>

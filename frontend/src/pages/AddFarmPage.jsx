@@ -55,7 +55,7 @@ function AddFarmPage({ onAdd }) {
   }
 
   return (
-    <div className="screen form-screen">
+    <div className="screen form-screen photo-screen">
       {/* Back arrow: on step 1 it leaves the form, on step 2 it goes back to step 1.
           The <svg> draws the arrow: path d holds the drawing commands, and
           stroke="currentColor" uses the text's colour. aria-label names it for screen readers */}

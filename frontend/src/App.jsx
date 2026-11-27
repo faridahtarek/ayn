@@ -15,8 +15,11 @@ import BrowseFarmsPage from "./pages/BrowseFarmsPage.jsx";
 import FundFarmPage from "./pages/FundFarmPage.jsx";
 import MyFundedFarmsPage from "./pages/MyFundedFarmsPage.jsx";
 import EditFundingPage from "./pages/EditFundingPage.jsx";
+import FarmPage from "./pages/FarmPage.jsx";
+import ProofPage from "./pages/ProofPage.jsx";
 import { getMyFarms, getOpenFarms, createFarm, updateFarm, removeFarm } from "./api/farms.js";
 import { getMyFundings, createFunding, updateFunding, removeFunding } from "./api/fundings.js";
+import { getMyProofs, createProof, updateProof, removeProof } from "./api/proofs.js";
 
 function App() {
   // Who is logged in. Kept in the browser, so a reload keeps it
@@ -47,6 +50,24 @@ function App() {
       .then((data) => setFarms(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+  }, [user]);
+
+  // Use case 4: the proofs the officer uploaded (one per farm at most),
+  // loaded the same way as the farms above
+  const [proofs, setProofs] = useState([]);
+  const [proofsLoading, setProofsLoading] = useState(isOfficer);
+
+  useEffect(() => {
+    if (!isOfficer) {
+      setProofs([]);
+      setProofsLoading(false);
+      return;
+    }
+    setProofsLoading(true);
+    getMyProofs()
+      .then((data) => setProofs(data))
+      .catch((err) => setError(err.message))
+      .finally(() => setProofsLoading(false));
   }, [user]);
 
   // Use case 3: a company's fundings, and the farms still waiting for a company
@@ -131,11 +152,39 @@ function App() {
     setFarms(farms.filter((f) => f._id !== id));
   }
 
+  // Use case 4: the API changes the farm's status too, so the page shows it at once
+  // { ...f, status: status }: a copy of the farm with only its status changed
+  // (like saveFarm above: map swaps that one farm, keeps the others)
+  function setFarmStatus(farmId, status) {
+    setFarms(farms.map((f) => (f._id === farmId ? { ...f, status: status } : f)));
+  }
+
+  async function addProof(proof) {
+    // The API saves it as "pending" and marks the farm "installed"
+    const saved = await createProof(proof);
+    setProofs([...proofs, saved]);
+    setFarmStatus(proof.farm, "installed");
+  }
+
+  async function saveProof(id, proof) {
+    // The API sets it back to "pending" and the farm to "installed"
+    const saved = await updateProof(id, proof);
+    setProofs(proofs.map((p) => (p._id === id ? saved : p)));
+    setFarmStatus(saved.farm, "installed");
+  }
+
+  async function deleteProof(id) {
+    const proof = proofs.find((p) => p._id === id);
+    await removeProof(id); // gone from MongoDB, and the farm is "funded" again
+    setProofs(proofs.filter((p) => p._id !== id));
+    setFarmStatus(proof.farm, "funded");
+  }
+
   // The home page: visitors see the landing page, officers their dashboard,
   // companies their own home (Lojaine's use cases)
   let home = <LandingPage />;
   if (isOfficer) {
-    home = <DashboardPage user={user} farms={farms} loading={loading} error={error} onLogOut={logOut} />;
+    home = <DashboardPage user={user} farms={farms} proofs={proofs} loading={loading} error={error} onLogOut={logOut} />;
   } else if (isCompany) {
     home = <CompanyDashboardPage user={user} fundings={fundings} openFarms={openFarms} loading={fundingLoading} error={fundingError} onLogOut={logOut} />;
   } else if (user) {
@@ -146,9 +195,13 @@ function App() {
     <main>
       <Routes>
         <Route path="/" element={home} />
-        <Route path="/farms" element={isOfficer ? <MyFarmsPage user={user} farms={farms} loading={loading} error={error} onLogOut={logOut} /> : <Navigate to="/" />} />
+        <Route path="/farms" element={isOfficer ? <MyFarmsPage user={user} farms={farms} proofs={proofs} loading={loading} error={error} onLogOut={logOut} /> : <Navigate to="/" />} />
         <Route path="/farms/new" element={isOfficer ? <AddFarmPage onAdd={addFarm} /> : <Navigate to="/" />} />
         <Route path="/farms/:id/edit" element={isOfficer ? <EditFarmPage farms={farms} loading={loading} onSave={saveFarm} onDelete={deleteFarm} /> : <Navigate to="/" />} />
+        {/* Use case 4: a funded farm's page with its proof, and the proof form */}
+        {/* loading || proofsLoading: wait until both lists have arrived */}
+        <Route path="/farms/:id" element={isOfficer ? <FarmPage farms={farms} proofs={proofs} loading={loading || proofsLoading} onDeleteProof={deleteProof} /> : <Navigate to="/" />} />
+        <Route path="/farms/:id/proof" element={isOfficer ? <ProofPage farms={farms} proofs={proofs} loading={loading || proofsLoading} onAdd={addProof} onSave={saveProof} /> : <Navigate to="/" />} />
         {/* Use case 3: a company's pages (anyone else is sent home) */}
         <Route path="/browse" element={isCompany ? <BrowseFarmsPage user={user} openFarms={openFarms} loading={fundingLoading} error={fundingError} onLogOut={logOut} /> : <Navigate to="/" />} />
         <Route path="/browse/:id" element={isCompany ? <FundFarmPage openFarms={openFarms} loading={fundingLoading} onFund={fundFarm} /> : <Navigate to="/" />} />

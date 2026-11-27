@@ -11,12 +11,12 @@ function EditFarmPage({ farms, loading, onSave, onDelete }) {
 
   // After a reload the farms are still on their way: wait, don't say "not found" yet
   if (loading) {
-    return <p className="screen form-screen empty">Loading your farm...</p>;
+    return <p className="screen form-screen photo-screen empty">Loading your farm...</p>;
   }
 
   if (!farm) {
     return (
-      <div className="screen form-screen">
+      <div className="screen form-screen photo-screen">
         <div className="welcome glass">
           <h1>Farm not found</h1>
           <Link to="/farms">Back to my farms</Link>
@@ -81,7 +81,7 @@ function EditFarmForm({ farm, onSave, onDelete }) {
   }
 
   return (
-    <div className="screen form-screen">
+    <div className="screen form-screen photo-screen">
       <div className="form-top">
         <Link to="/farms" className="icon-button glass" aria-label="Back to my farms">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>

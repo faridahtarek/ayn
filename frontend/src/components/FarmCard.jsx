@@ -9,7 +9,18 @@ const statusLabels = {
   confirmed: "Confirmed",
 };
 
-function FarmCard({ farm }) {
+// Use case 4: what happens next for this farm, from its status and its proof.
+// Used here on each row and on the farm's own page (FarmPage.jsx)
+export function nextStep(farm, proof) {
+  if (farm.status === "open") return "Next: a company funds the kit";
+  if (farm.status === "installed") return "Next: the company reviews your proof";
+  if (farm.status === "confirmed") return "Done: the farmer's reward is released";
+  // Funded: no proof yet, or the company rejected it (the farm went back to funded)
+  if (proof && proof.status === "rejected") return "Next: send new proof";
+  return "Next: add proof once the kit is installed";
+}
+
+function FarmCard({ farm, proof }) {
   // The inside of the card, kept in a variable so both versions below reuse it
   const details = (
     <>
@@ -24,6 +35,7 @@ function FarmCard({ farm }) {
         <span className="farm-meta">
           {farm.village} · {farm.feddans} fd · {farm.crop}
         </span>
+        <span className="farm-next">{nextStep(farm, proof)}</span>
       </div>
       {/* statusLabels[farm.status] looks up the name in the object above,
           e.g. statusLabels["installed"] is "Awaiting review" */}
@@ -39,7 +51,12 @@ function FarmCard({ farm }) {
       </Link>
     );
   }
-  return <div className="farm-card">{details}</div>;
+  // Use case 4: a funded farm opens its own page, with its proof
+  return (
+    <Link className="farm-card" to={`/farms/${farm._id}`}>
+      {details}
+    </Link>
+  );
 }
 
 export default FarmCard;

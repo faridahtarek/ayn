@@ -13,7 +13,7 @@ const tabs = [
   { label: "Confirmed", status: "confirmed" },
 ];
 
-function MyFarmsPage({ user, farms, loading, error, onLogOut }) {
+function MyFarmsPage({ user, farms, proofs, loading, error, onLogOut }) {
   // Which tab is chosen (Lab 7: state)
   const [tab, setTab] = useState("all");
 
@@ -29,10 +29,13 @@ function MyFarmsPage({ user, farms, loading, error, onLogOut }) {
   const shown = farms.filter((f) => tab === "all" || f.status === tab);
 
   // One card per farm
-  const cards = shown.map((farm) => <FarmCard key={farm._id} farm={farm} />);
+  // Each row also gets its farm's proof, for the "Next: ..." line (use case 4)
+  const cards = shown.map((farm) => (
+    <FarmCard key={farm._id} farm={farm} proof={proofs.find((p) => p.farm === farm._id)} />
+  ));
 
   return (
-    <div className="screen home-screen farms-screen">
+    <div className="screen home-screen farms-screen photo-screen">
       <Header user={user} onLogOut={onLogOut} />
 
       {/* On a laptop: the summary and filters on the left, the farms on the right */}

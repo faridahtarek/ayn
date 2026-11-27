@@ -5,6 +5,7 @@ import { connectDB } from "./db.js";
 import authRoutes from "./routes/authRoutes.js";
 import farmRoutes from "./routes/farmRoutes.js";
 import fundingRoutes from "./routes/fundingRoutes.js";
+import proofRoutes from "./routes/proofRoutes.js";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/farms", farmRoutes);
 app.use("/api/fundings", fundingRoutes);
+app.use("/api/proofs", proofRoutes); // use case 4
 
 // ========== START ==========
 await connectDB();
