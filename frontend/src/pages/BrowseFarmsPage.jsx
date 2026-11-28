@@ -14,7 +14,7 @@ const sizes = [
   { label: "Over 3 feddans", key: "large", min: 3, max: Infinity },
 ];
 
-function BrowseFarmsPage({ user, openFarms, loading, error, onLogOut }) {
+function BrowseFarmsPage({ user, openFarms, reviewCount, loading, error, onLogOut }) {
   // The 3 filters (Lab 7: state). "all" means no filter
   const [governorate, setGovernorate] = useState("all");
   const [crop, setCrop] = useState("all");
@@ -41,7 +41,7 @@ function BrowseFarmsPage({ user, openFarms, loading, error, onLogOut }) {
 
   return (
     <div className="screen home-screen co-screen">
-      <Header user={user} onLogOut={onLogOut} />
+      <Header user={user} onLogOut={onLogOut} reviewCount={reviewCount} />
 
       {/* The photo band (a tractor working a field, from above), with the count of what the filters show */}
       <section className="co-hero co-hero-short" style={{ backgroundImage: "url(/images/company/tractor-aerial.jpg)" }}>

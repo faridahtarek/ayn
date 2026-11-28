@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import Header from "../components/Header.jsx";
 import FarmTile from "../components/FarmTile.jsx";
 import { egp } from "../money.js";
+import { feddansSwitched } from "../reviewQueue.js";
 
 // The filter tabs, and the farm status each one shows
 const tabs = [
@@ -14,7 +15,7 @@ const tabs = [
   { label: "Confirmed", status: "confirmed" },
 ];
 
-function MyFundedFarmsPage({ user, fundings, loading, error, onLogOut }) {
+function MyFundedFarmsPage({ user, fundings, reviewCount, loading, error, onLogOut }) {
   const [tab, setTab] = useState("all");
 
   // What the company committed (each kit + its reward) and the feddans it funded
@@ -30,7 +31,7 @@ function MyFundedFarmsPage({ user, fundings, loading, error, onLogOut }) {
 
   return (
     <div className="screen home-screen co-screen">
-      <Header user={user} onLogOut={onLogOut} />
+      <Header user={user} onLogOut={onLogOut} reviewCount={reviewCount} />
 
       {/* The total on a photo of the Nile valley */}
       <section className="co-hero co-hero-short" style={{ backgroundImage: "url(/images/company/nile-valley.jpg)" }}>
@@ -40,6 +41,8 @@ function MyFundedFarmsPage({ user, fundings, loading, error, onLogOut }) {
           {/* e.g. "committed to 4.3 feddans across 2 farms" */}
           <p>
             committed to {Math.round(totalFeddans * 10) / 10} feddans across {fundings.length} {fundings.length === 1 ? "farm" : "farms"}
+            {/* Use case 5: how much of it is proven on drip, for the sustainability report */}
+            {" · "}{feddansSwitched(fundings)} switched to drip
           </p>
           <div className="hero-actions">
             <Link to="/browse" className="main-button">Fund another farm</Link>

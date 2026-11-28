@@ -1300,7 +1300,7 @@ a.farm-card:hover { background: rgba(255,255,255,0.06); color: #FFFFFF; }
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.1);
 }
-.co-tabs button { font-size: 13px; }
+.co-tabs button { font-size: 13px; white-space: nowrap; }  /* nowrap: "Confirmed 2" stays on one line */
 
 /* --- Fund this kit: a framed card floating over an aerial photo --- */
 /* .form-screen.co-photo-screen: both classes, so it wins over the plain background above */
@@ -1408,7 +1408,8 @@ a.farm-card:hover { background: rgba(255,255,255,0.06); color: #FFFFFF; }
   .co-hero-text h1 { font-size: 72px; letter-spacing: -2.6px; }
   .co-hero-text p { font-size: 20px; }
   .co-hero-stats { gap: 40px; max-width: 980px; }
-  .co-stat-number { font-size: 54px; letter-spacing: -1.6px; }
+  /* clamp(smallest, grows with the window, largest): big amounts like "EGP 135,900" stay on one line */
+  .co-stat-number { font-size: clamp(36px, 3.6vw, 54px); letter-spacing: -1.6px; white-space: nowrap; }
   .co-stat-label { font-size: 14px; }
   .co-section-head h2 { font-size: 34px; letter-spacing: -1px; }
   .co-overview-numbers { grid-template-columns: repeat(3, 1fr); }
@@ -1467,3 +1468,253 @@ a.farm-card:hover { background: rgba(255,255,255,0.06); color: #FFFFFF; }
   .frame-right > * { margin-left: 0; }
   .wide-frame .co-frame-photo { height: 420px; }
 }
+
+/* ===================================================================
+   Use case 5: Company reviews proof, and the company's navigation
+   =================================================================== */
+
+/* --- The header: the number beside "Review proof", and the Jump to button --- */
+/* A small pale-green pill with the count, e.g. "3" */
+.nav-count {
+  margin-left: 7px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #C9EAC0;
+  color: #1C2521;
+  font-size: 11px;
+  font-weight: 700;
+}
+.jump-button {
+  height: 36px;
+  padding: 0 10px 0 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  display: none;  /* hidden on a phone: there's no keyboard shortcut there anyway */
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  color: #C3CDC6;
+  font: 500 13px Inter, sans-serif;
+  cursor: pointer;
+  transition: background .2s, color .2s;  /* transition: changes smoothly */
+}
+.jump-button:hover { background: rgba(255,255,255,0.12); color: #FFFFFF; }
+/* <kbd>: a key on the keyboard, drawn as a small key cap */
+kbd {
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.08);
+  font: 500 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #E3E9E4;
+}
+@media (min-width: 900px) {  /* @media: only on wider windows */
+  .jump-button { display: flex; margin-left: auto; }
+  /* The button already pushes the name to the right */
+  .jump-button + .who { margin-left: 12px; }
+}
+
+/* --- Quick jump: the search box over the page --- */
+.jump-backdrop {
+  position: fixed;  /* fixed: covers the window, even while the page scrolls */
+  inset: 0;
+  z-index: 50;  /* z-index: in front of everything */
+  padding: 12vh 16px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: rgba(10,16,13,0.55);
+  backdrop-filter: blur(6px);  /* backdrop-filter: blurs the page behind */
+  animation: jump-fade .15s ease-out;
+}
+.jump-box {
+  width: min(600px, 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(30,40,35,0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,0.8);
+  animation: jump-in .18s ease-out;
+}
+.jump-box input {
+  width: 100%;
+  height: 60px;
+  padding: 0 22px;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: #FFFFFF;
+  font: 17px Inter, sans-serif;
+  outline: none;
+}
+.jump-box input::placeholder { color: #8E9A92; }
+.jump-list { margin: 0; padding: 8px; list-style: none; max-height: 380px; overflow-y: auto; }
+.jump-list li {
+  padding: 11px 14px;
+  border-radius: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  cursor: pointer;
+}
+/* The highlighted row (arrow keys or mouse) */
+.jump-list li.on { background: rgba(201,234,192,0.14); }
+.jump-label { font-weight: 500; color: #FFFFFF; }
+.jump-place { font-size: 13px; color: #9DA8A2; }
+.jump-hint { margin-left: auto; font-size: 12px; color: #C9EAC0; white-space: nowrap; }
+.jump-empty { color: #9DA8A2; cursor: default; }
+.jump-keys {
+  padding: 10px 18px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  gap: 18px;
+  font-size: 12px;
+  color: #9DA8A2;
+}
+.jump-keys kbd { margin-right: 3px; }
+/* @keyframes: an animation, from its first look to its last */
+@keyframes jump-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes jump-in { from { opacity: 0; transform: translateY(-8px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+/* --- Review proof: the drops hang from the top edge, above the text ---
+   background-position: which part of the photo shows (55% down instead of the middle) */
+.co-hero-drops { background-position: center 58%; }
+
+/* --- Review proof: the count in each tab --- */
+.tab-count { margin-left: 4px; color: #9DA8A2; font-size: 12px; }
+.switch button.on .tab-count { color: inherit; }
+
+/* --- One proof: the queue "2 of 5" with its arrows, at the top right --- */
+.review-top { display: flex; justify-content: space-between; align-items: center; }
+.queue-nav {
+  height: 44px;
+  padding: 0 4px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.queue-count { padding: 0 10px; font-size: 14px; color: #C3CDC6; white-space: nowrap; }
+.queue-count strong { color: #FFFFFF; }
+.queue-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  transition: background .2s;
+}
+.queue-arrow:hover { background: rgba(255,255,255,0.12); color: #FFFFFF; }
+.queue-arrow.off { opacity: 0.3; }  /* the end of the queue: nothing to go to */
+.keys-hint { display: none; text-align: center; color: #9DA8A2; }  /* only with a keyboard (below) */
+@media (min-width: 900px) { .keys-hint { display: block; } }
+.keys-hint kbd { margin: 0 1px; }
+
+/* --- The before/after slider --- */
+.compare { touch-action: pan-y; }  /* on a phone, a sideways drag moves the slider, not the page */
+.compare-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+/* The white line at the cut, and its round handle */
+.compare-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: #FFFFFF;
+  box-shadow: 0 0 12px rgba(0,0,0,0.5);
+  pointer-events: none;  /* clicks go through to the slider underneath */
+}
+.compare-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);  /* centres it on the line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  color: #1C2521;
+  font: 700 16px Inter, sans-serif;
+  letter-spacing: 2px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+/* "Proof" bottom left, "Before" bottom right */
+.compare-tag {
+  position: absolute;
+  bottom: 12px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(20,28,24,0.66);
+  backdrop-filter: blur(12px);
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+}
+.compare-after { left: 12px; }
+.compare-before { right: 12px; }
+/* The real slider: invisible, over the whole photo, so a drag anywhere moves the cut */
+.compare-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;  /* the left-right arrows cursor */
+}
+/* The badges stay above the two photos */
+.compare .co-badge { z-index: 1; }
+
+/* --- The note box (taller than one line) --- */
+.field-group label.note-field { height: auto; padding: 12px 16px; align-items: flex-start; }
+.field-group label.note-field span { padding-top: 2px; }
+.note-field textarea {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font: 15px/1.45 Inter, sans-serif;
+  resize: vertical;  /* the officer can make it taller, not wider */
+  outline: none;
+}
+.note-field textarea::placeholder { color: #8E9A92; }
+.co-frame button:disabled { opacity: 0.5; cursor: wait; }
+
+/* --- The message that fades in at the bottom after a decision --- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 40;
+  max-width: calc(100% - 32px);
+  padding: 14px 20px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: rgba(30,40,35,0.94);
+  border: 1px solid rgba(201,234,192,0.35);
+  color: #FFFFFF;
+  font-size: 14px;
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8);
+  animation: toast-in .25s ease-out;
+}
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* --- Company home: "Proof to review" is a link to the review page --- */
+a.overview-link { color: inherit; text-decoration: none; border-radius: 14px; transition: background .2s; }
+a.overview-link:hover { background: rgba(255,255,255,0.05); color: inherit; }

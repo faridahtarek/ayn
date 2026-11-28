@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import farmRoutes from "./routes/farmRoutes.js";
 import fundingRoutes from "./routes/fundingRoutes.js";
 import proofRoutes from "./routes/proofRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/farms", farmRoutes);
 app.use("/api/fundings", fundingRoutes);
 app.use("/api/proofs", proofRoutes); // use case 4
+app.use("/api/reviews", reviewRoutes); // use case 5
 
 // ========== START ==========
 await connectDB();

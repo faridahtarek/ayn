@@ -33,19 +33,22 @@ export function photoFor(farm) {
 }
 
 // to: where the card leads. price: the amount in the corner (e.g. the kit cost).
-// action: the words beside the arrow. showStatus: the status badge, on My farms funded
-function FarmTile({ farm, to, price, action, showStatus }) {
+// action: the words beside the arrow. showStatus: the status badge, on My farms funded.
+// Use case 5: photo (the proof's photo instead of the farm's), badge and badgeStatus
+// (the proof's own status, e.g. "pending", instead of the farm's)
+function FarmTile({ farm, to, price, action, showStatus, photo, badge, badgeStatus }) {
   return (
     <Link className="co-tile" to={to}>
       {/* The photo, with the governorate and status as small badges on top of it.
           style={{ backgroundImage }}: the photo is set from JSX, like the landing page bands */}
-      <div className="co-tile-photo" style={{ backgroundImage: `url(${photoFor(farm)})` }}>
+      <div className="co-tile-photo" style={{ backgroundImage: `url(${photo || photoFor(farm)})` }}>
         <span className="co-badge">{farm.governorate}</span>
         {showStatus && (
-          <span className={`co-badge co-status co-status-${farm.status}`}>{statusLabels[farm.status]}</span>
+          <span className={`co-badge co-status co-status-${badgeStatus || farm.status}`}>{badge || statusLabels[farm.status]}</span>
         )}
         {/* An honest note when the photo isn't of this farm */}
-        {!farm.photoUrl && <span className="co-photo-note">Library photo</span>}
+        {photo && <span className="co-photo-note">Proof photo</span>}
+        {!photo && !farm.photoUrl && <span className="co-photo-note">Library photo</span>}
       </div>
 
       <div className="co-tile-body">

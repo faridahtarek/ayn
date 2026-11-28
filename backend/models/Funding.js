@@ -25,6 +25,12 @@ export async function getFundingsByCompany(companyId) {
   return Funding.find({ company: companyId }).populate("farm");
 }
 
+// Use case 5: the funding of one farm, or null (one company per farm)
+// findOne: the first document that matches, instead of a list
+export async function getFundingByFarm(farmId) {
+  return Funding.findOne({ farm: farmId }).populate("farm");
+}
+
 export async function getFundingById(id) {
   // "abc" can never be an _id: not found
   if (!mongoose.isValidObjectId(id)) return null;

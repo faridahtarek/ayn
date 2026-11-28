@@ -33,6 +33,12 @@ export async function getProofByFarm(farmId) {
   return Proof.findOne({ farm: farmId });
 }
 
+// Use case 5: the proofs of a list of farms (the farms a company funded)
+// $in: the farm field equals any of the ids in the list
+export async function getProofsByFarms(farmIds) {
+  return Proof.find({ farm: { $in: farmIds } });
+}
+
 export async function getProofById(id) {
   // "abc" can never be an _id: not found
   if (!mongoose.isValidObjectId(id)) return null;

@@ -13,7 +13,7 @@ const statusNotes = {
   confirmed: "Confirmed · reward released",
 };
 
-function EditFundingPage({ fundings, loading, onSave, onWithdraw }) {
+function EditFundingPage({ fundings, reviews, loading, onSave, onWithdraw }) {
   // For /funded/abc123, id is the funding's _id
   const { id } = useParams();
   const funding = fundings.find((f) => f._id === id);
@@ -35,10 +35,11 @@ function EditFundingPage({ fundings, loading, onSave, onWithdraw }) {
   }
 
   // key: a fresh form for each funding (same reason as on Edit farm)
-  return <EditFundingForm key={funding._id} funding={funding} onSave={onSave} onWithdraw={onWithdraw} />;
+  return <EditFundingForm key={funding._id} funding={funding} proof={reviews.find((p) => p.farm === funding.farm._id)} onSave={onSave} onWithdraw={onWithdraw} />;
 }
 
-function EditFundingForm({ funding, onSave, onWithdraw }) {
+// proof (use case 5): the officer's proof for this farm, if there is one
+function EditFundingForm({ funding, proof, onSave, onWithdraw }) {
   // The farm inside the funding (the API filled it in with populate)
   const farm = funding.farm;
   // The reward starts at the saved one
@@ -124,6 +125,10 @@ function EditFundingForm({ funding, onSave, onWithdraw }) {
         </div>
 
         {/* && : the buttons only exist while the deal can change */}
+        {/* Use case 5: proof is waiting, so the next step is the review */}
+        {proof && proof.status === "pending" && (
+          <Link to={`/review/${proof._id}`} className="main-button">Review the proof</Link>
+        )}
         {canChange && <button className="main-button" type="submit">Save reward</button>}
         {canChange && (
           <button className="delete-button" type="button" onClick={() => setConfirming(true)}>

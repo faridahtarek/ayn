@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import Header from "../components/Header.jsx";
 import FarmTile from "../components/FarmTile.jsx";
 import { egp } from "../money.js";
+import { feddansSwitched } from "../reviewQueue.js";
 
 // The 3 stages of a funded farm: its name on screen and its class (colour in index.css)
 const statuses = [
@@ -22,7 +23,7 @@ function greeting() {
   return "Good evening";
 }
 
-function CompanyDashboardPage({ user, fundings, openFarms, loading, error, onLogOut }) {
+function CompanyDashboardPage({ user, fundings, openFarms, reviewCount, loading, error, onLogOut }) {
   // Add up what the company has committed (kit + reward) and the feddans it funded
   // forEach: once per funding; += adds to the total
   let committed = 0;
@@ -42,7 +43,7 @@ function CompanyDashboardPage({ user, fundings, openFarms, loading, error, onLog
 
   return (
     <div className="screen home-screen co-screen">
-      <Header user={user} onLogOut={onLogOut} />
+      <Header user={user} onLogOut={onLogOut} reviewCount={reviewCount} />
 
       {/* The headline on a photo of the fields, with the company's numbers along the bottom */}
       <section className="co-hero" style={{ backgroundImage: "url(/images/company/delta-aerial.jpg)" }}>
@@ -52,7 +53,7 @@ function CompanyDashboardPage({ user, fundings, openFarms, loading, error, onLog
           <p>
             {fundings.length === 0
               ? "Fund your first drip kit and reward the farmer who switches."
-              : "Every kit you fund takes a farm off flood irrigation."}
+              : `${feddansSwitched(fundings)} of your ${Math.round(totalFeddans * 10) / 10} feddans funded are now on drip.`}
           </p>
           <div className="hero-actions">
             <Link to="/browse" className="main-button">Fund a farm</Link>
@@ -66,10 +67,10 @@ function CompanyDashboardPage({ user, fundings, openFarms, loading, error, onLog
             <span className="co-stat-number">{egp(committed)}</span>
             <span className="co-stat-label">committed</span>
           </div>
+          {/* Use case 5: only the confirmed farms count, the kits proven in the ground */}
           <div className="co-stat">
-            {/* Math.round(x * 10) / 10 rounds to one decimal */}
-            <span className="co-stat-number">{Math.round(totalFeddans * 10) / 10}</span>
-            <span className="co-stat-label">feddans funded</span>
+            <span className="co-stat-number">{feddansSwitched(fundings)}</span>
+            <span className="co-stat-label">feddans switched to drip</span>
           </div>
           <div className="co-stat">
             <span className="co-stat-number">{openFarms.length}</span>
@@ -86,13 +87,21 @@ function CompanyDashboardPage({ user, fundings, openFarms, loading, error, onLog
         </div>
 
         <div className="overview-numbers co-overview-numbers">
-          {statuses.map((s) => (
-            <div key={s.key} className="overview-number">
-              <span className={`dot dot-${s.key}`}></span>
-              <span className="overview-count">{count(s.key)}</span>
-              <span className="overview-label">{s.label}</span>
-            </div>
-          ))}
+          {statuses.map((s) => {
+            const inside = (
+              <>
+                <span className={`dot dot-${s.key}`}></span>
+                <span className="overview-count">{count(s.key)}</span>
+                <span className="overview-label">{s.label}</span>
+              </>
+            );
+            // Use case 5: "Proof to review" opens the review page
+            return s.key === "installed" ? (
+              <Link key={s.key} to="/review" className="overview-number overview-link">{inside}</Link>
+            ) : (
+              <div key={s.key} className="overview-number">{inside}</div>
+            );
+          })}
         </div>
 
         {/* Each part of the bar is as wide as its share of the farms it funded */}

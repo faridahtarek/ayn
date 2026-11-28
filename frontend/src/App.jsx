@@ -17,9 +17,14 @@ import MyFundedFarmsPage from "./pages/MyFundedFarmsPage.jsx";
 import EditFundingPage from "./pages/EditFundingPage.jsx";
 import FarmPage from "./pages/FarmPage.jsx";
 import ProofPage from "./pages/ProofPage.jsx";
+import ReviewsPage from "./pages/ReviewsPage.jsx";
+import ReviewProofPage from "./pages/ReviewProofPage.jsx";
+import QuickJump from "./components/QuickJump.jsx";
 import { getMyFarms, getOpenFarms, createFarm, updateFarm, removeFarm } from "./api/farms.js";
 import { getMyFundings, createFunding, updateFunding, removeFunding } from "./api/fundings.js";
 import { getMyProofs, createProof, updateProof, removeProof } from "./api/proofs.js";
+import { getMyReviews, reviewProof } from "./api/reviews.js";
+import { waitingQueue } from "./reviewQueue.js";
 
 function App() {
   // Who is logged in. Kept in the browser, so a reload keeps it
@@ -75,6 +80,8 @@ function App() {
 
   const [fundings, setFundings] = useState([]);
   const [openFarms, setOpenFarms] = useState([]);
+  // Use case 5: the proofs of the farms the company funded
+  const [reviews, setReviews] = useState([]);
   const [fundingLoading, setFundingLoading] = useState(isCompany);
   const [fundingError, setFundingError] = useState("");
 
@@ -84,17 +91,19 @@ function App() {
     if (!isCompany) {
       setFundings([]);
       setOpenFarms([]);
+      setReviews([]);
       setFundingLoading(false);
       return;
     }
     setFundingLoading(true);
     setFundingError("");
-    // Not in the lab: Promise.all sends both requests at once and waits for both;
-    // [mine, open] takes the two answers in the same order
-    Promise.all([getMyFundings(), getOpenFarms()])
-      .then(([mine, open]) => {
+    // Not in the lab: Promise.all sends the requests at once and waits for all of them;
+    // [mine, open, proofs] takes the answers in the same order (proofs: use case 5)
+    Promise.all([getMyFundings(), getOpenFarms(), getMyReviews()])
+      .then(([mine, open, proofs]) => {
         setFundings(mine);
         setOpenFarms(open);
+        setReviews(proofs);
       })
       .catch((err) => setFundingError(err.message))
       .finally(() => setFundingLoading(false));
@@ -121,6 +130,18 @@ function App() {
     // Back on the list of farms waiting, with its new status
     setOpenFarms([...openFarms, { ...funding.farm, status: "open" }]);
   }
+
+  // Use case 5: the company confirms or rejects a proof.
+  // The API sends back the proof and the funding (with the farm's new status inside),
+  // so both lists swap in the new versions, like saveReward above
+  async function decideProof(id, decision, note) {
+    const saved = await reviewProof(id, decision, note);
+    setReviews(reviews.map((p) => (p._id === id ? saved.proof : p)));
+    setFundings(fundings.map((f) => (f._id === saved.funding._id ? saved.funding : f)));
+  }
+
+  // How many proofs wait for the company: the number beside "Review proof" in the header
+  const reviewCount = isCompany ? waitingQueue(reviews, fundings).length : 0;
 
   function logIn(session) {
     localStorage.setItem("token", session.token);
@@ -186,7 +207,7 @@ function App() {
   if (isOfficer) {
     home = <DashboardPage user={user} farms={farms} proofs={proofs} loading={loading} error={error} onLogOut={logOut} />;
   } else if (isCompany) {
-    home = <CompanyDashboardPage user={user} fundings={fundings} openFarms={openFarms} loading={fundingLoading} error={fundingError} onLogOut={logOut} />;
+    home = <CompanyDashboardPage user={user} fundings={fundings} openFarms={openFarms} reviewCount={reviewCount} loading={fundingLoading} error={fundingError} onLogOut={logOut} />;
   } else if (user) {
     home = <HomePage user={user} onLogOut={logOut} />;
   }
@@ -203,14 +224,20 @@ function App() {
         <Route path="/farms/:id" element={isOfficer ? <FarmPage farms={farms} proofs={proofs} loading={loading || proofsLoading} onDeleteProof={deleteProof} /> : <Navigate to="/" />} />
         <Route path="/farms/:id/proof" element={isOfficer ? <ProofPage farms={farms} proofs={proofs} loading={loading || proofsLoading} onAdd={addProof} onSave={saveProof} /> : <Navigate to="/" />} />
         {/* Use case 3: a company's pages (anyone else is sent home) */}
-        <Route path="/browse" element={isCompany ? <BrowseFarmsPage user={user} openFarms={openFarms} loading={fundingLoading} error={fundingError} onLogOut={logOut} /> : <Navigate to="/" />} />
+        <Route path="/browse" element={isCompany ? <BrowseFarmsPage user={user} openFarms={openFarms} reviewCount={reviewCount} loading={fundingLoading} error={fundingError} onLogOut={logOut} /> : <Navigate to="/" />} />
         <Route path="/browse/:id" element={isCompany ? <FundFarmPage openFarms={openFarms} loading={fundingLoading} onFund={fundFarm} /> : <Navigate to="/" />} />
-        <Route path="/funded" element={isCompany ? <MyFundedFarmsPage user={user} fundings={fundings} loading={fundingLoading} error={fundingError} onLogOut={logOut} /> : <Navigate to="/" />} />
-        <Route path="/funded/:id" element={isCompany ? <EditFundingPage fundings={fundings} loading={fundingLoading} onSave={saveReward} onWithdraw={withdrawFunding} /> : <Navigate to="/" />} />
+        <Route path="/funded" element={isCompany ? <MyFundedFarmsPage user={user} fundings={fundings} reviewCount={reviewCount} loading={fundingLoading} error={fundingError} onLogOut={logOut} /> : <Navigate to="/" />} />
+        <Route path="/funded/:id" element={isCompany ? <EditFundingPage fundings={fundings} reviews={reviews} loading={fundingLoading} onSave={saveReward} onWithdraw={withdrawFunding} /> : <Navigate to="/" />} />
+        {/* Use case 5: the company reviews the proof of the farms it funded */}
+        <Route path="/review" element={isCompany ? <ReviewsPage user={user} fundings={fundings} reviews={reviews} loading={fundingLoading} error={fundingError} onLogOut={logOut} /> : <Navigate to="/" />} />
+        <Route path="/review/:id" element={isCompany ? <ReviewProofPage fundings={fundings} reviews={reviews} loading={fundingLoading} onReview={decideProof} /> : <Navigate to="/" />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage onLogIn={logIn} />} />
         <Route path="/register" element={user ? <Navigate to="/" /> : <RegisterPage onLogIn={logIn} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
+      {/* Use case 5: Ctrl + K opens Quick jump on every company page */}
+      {isCompany && <QuickJump fundings={fundings} openFarms={openFarms} reviews={reviews} />}
     </main>
   );
 }

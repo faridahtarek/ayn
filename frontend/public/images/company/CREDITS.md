@@ -1,6 +1,7 @@
 # Photos on the company pages (use case 3)
 
-All from Unsplash, free to use under the Unsplash License (https://unsplash.com/license).
+From Unsplash (free under the Unsplash License, https://unsplash.com/license)
+and Pexels (free under the Pexels License, https://www.pexels.com/license/).
 Resized for the web.
 
 | File | Photographer | Unsplash photo |
@@ -16,3 +17,7 @@ Resized for the web.
 | palms-field.jpg | Mohamad Sameh | https://unsplash.com/photos/JA9TSEhpYVw |
 | mudbrick-field.jpg | Mohamad Sameh | https://unsplash.com/photos/g-fqXTTH3oA |
 | nile-feluccas.jpg | Elisabeth Schrubba | https://unsplash.com/photos/vLWVVb6BPsI |
+| drip-drops.jpg | Unsplash | https://unsplash.com/photos/MPBZVmzzMho |
+| proof-farmer-harvest.jpg | Unsplash | https://unsplash.com/photos/HFXurfNzDeE |
+| proof-farmer-palms.jpg | zaid mohammed (Pexels) | https://www.pexels.com/photo/man-harvesting-wheat-10221634/ |
+| proof-farmer-field.jpg | Ali Hussein (Pexels) | https://www.pexels.com/photo/a-farmer-holding-a-shovel-11333398/ |

@@ -3,7 +3,8 @@
 import { NavLink } from "react-router";
 import Logo from "./Logo.jsx";
 
-function Header({ user, onLogOut }) {
+// reviewCount (use case 5): how many proofs wait for the company, shown as a small number
+function Header({ user, onLogOut, reviewCount }) {
   const isOfficer = user.role === "officer";
 
   return (
@@ -20,7 +21,23 @@ function Header({ user, onLogOut }) {
         {/* Use case 3: a company's pages */}
         {!isOfficer && <NavLink to="/browse">Fund a farm</NavLink>}
         {!isOfficer && <NavLink to="/funded">My farms funded</NavLink>}
+        {/* Use case 5: the number appears only when proof is waiting */}
+        {!isOfficer && (
+          <NavLink to="/review">
+            Review proof
+            {reviewCount > 0 && <span className="nav-count">{reviewCount}</span>}
+          </NavLink>
+        )}
       </nav>
+
+      {/* Use case 5: opens Quick jump (QuickJump.jsx listens for this signal) */}
+      {!isOfficer && (
+        <button className="jump-button" type="button" onClick={() => window.dispatchEvent(new Event("ayn:quickjump"))}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+          <span>Jump to</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+      )}
 
       <div className="who">
         <span className="who-name">{user.name}</span>
